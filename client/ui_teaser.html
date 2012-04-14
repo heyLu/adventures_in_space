@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple UI teaser</title>
+	<meta charset="utf-8" />
+
+	<style type="text/css">
+	body { background-color: #000 }
+
+	#controlbar {
+		position: fixed;
+		bottom: 0;
+
+		width: 100%;
+
+		background-color: #222;
+		color: #aaa;
+		border-top: 1px dotted #fff;
+	}
+</style>
+</head>
+
+<body>
+
+<canvas id="space">
+Sorry, but we really need the canvas.
+</canvas>
+
+<footer id="controlbar">
+	<label>
+		Acceleration:
+		<input type="number" min="0" max="100" value="10" />
+	</label>
+
+	<label>
+		Direction:
+		<input type="number" min="0" max="360" value="0" />
+	</label>
+</footer>
+
+</body>
+
+<script language="javascript">
+window.addEventListener('load', function() {
+	var space = document.getElementById('space'),
+	    ctx   = space.getContext('2d')
+	    stars = []
+	    controlbar = document.getElementById('controlbar')
+
+	space.width  = window.innerWidth - 10
+	space.height = window.innerHeight - controlbar.clientHeight
+	ctx.fillStyle = "#fff"
+	for(var i = 0; i < window.innerWidth * window.innerHeight * 0.001; i++) {
+		stars[i] = [Math.random() * space.width,
+		            Math.random() * space.height]
+		ctx.fillRect(stars[i][0], stars[i][1], 2, 2)
+	}
+
+	space.onmousemove = function(ev) {
+		ctx.fillStyle = "#000"
+		ctx.fillRect(0, 0, space.width, space.height)
+
+		ctx.fillStyle = "#fff"
+		for(var i = 0; i < stars.length; i++) {
+			ctx.fillRect(stars[i][0], stars[i][1], 2, 2)
+		}
+
+		ctx.fillStyle = "#f00"
+		ctx.beginPath()
+		ctx.arc(ev.clientX, ev.clientY, 10, 0, 360)
+		ctx.fill()
+	}
+}, false)
+</script>
+</html>
