@@ -68,9 +68,10 @@ window.addEventListener('load', function() {
 	for(var i = 0; i < window.innerWidth * window.innerHeight * 0.001; i++) {
 		stars[i] = [Math.random() * space.width,
 		            Math.random() * space.height,
-		            starColor(i)]
+		            starColor(i),
+		            Math.floor(Math.random() * 2) + 1]
 		ctx.fillStyle = stars[i][2]
-		ctx.fillRect(stars[i][0], stars[i][1], 2, 2)
+		ctx.fillRect(stars[i][0], stars[i][1], stars[i][3], stars[i][3])
 	}
 
 	space.onmousemove = function(ev) {
@@ -79,7 +80,7 @@ window.addEventListener('load', function() {
 
 		for(var i = 0; i < stars.length; i++) {
 			ctx.fillStyle = stars[i][2]
-			ctx.fillRect(stars[i][0], stars[i][1], 2, 2)
+			ctx.fillRect(stars[i][0], stars[i][1], stars[i][3], stars[i][3])
 		}
 
 		ctx.fillStyle = "#f00"
