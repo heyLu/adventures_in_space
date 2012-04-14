@@ -121,13 +121,7 @@ window.addEventListener('load', function() {
 	starField.draw()
 
 	space.onmousemove = function(ev) {
-		ctx.fillStyle = "#000"
-		ctx.fillRect(0, 0, space.width, space.height)
-
-		for(var i = 0; i < stars.length; i++) {
-			ctx.fillStyle = stars[i][2]
-			ctx.fillRect(stars[i][0], stars[i][1], stars[i][3], stars[i][3])
-		}
+		ctx.clearRect(0, 0, space.width, space.height)
 
 		ctx.fillStyle = "#f00"
 		ctx.beginPath()
