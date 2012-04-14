@@ -7,11 +7,20 @@
 	<style type="text/css">
 	body { background-color: #000 }
 
-	#stars, #space {
+	#stars, #stars_blink1, #stars_blink2, #space {
 		position: fixed;
 		left: 0;
 		top: 0
 	}
+
+	@-webkit-keyframes fade {
+		0% { opacity: 0.5 }
+		50% { opacity: 1.0 }
+		100% { opacity: 0.5 }
+	}
+
+	#stars_blink1 { -webkit-animation: fade 3s infinite }
+	#stars_blink2 { -webkit-animation: fade 5s infinite }
 
 	#space {
 		cursor: none;
@@ -113,12 +122,18 @@ window.addEventListener('load', function() {
 
 	var space = document.getElementById('space'),
 	    ctx   = space.getContext('2d'),
-	    starField = new StarField(document.getElementById('stars')),
+	    sternleinStehen = window.innerWidth * window.innerHeight * 0.001,
+	    starField = new StarField(document.getElementById('stars'), sternleinStehen * 0.7),
+	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.2),
+	    blink2 = new StarField(document.getElementById('stars_blink2'), sternleinStehen * 0.1),
 	    controlbar = document.getElementById('controlbar')
+
 
 	space.width  = window.innerWidth
 	space.height = window.innerHeight
 	starField.draw()
+	blink1.draw()
+	blink2.draw()
 
 	space.onmousemove = function(ev) {
 		ctx.clearRect(0, 0, space.width, space.height)
