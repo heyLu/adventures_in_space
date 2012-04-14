@@ -9,5 +9,10 @@ This is a student project by two students of the [HTWK Leipzig][] for a
 [OpenLaszlo][] on the clients (hopefully, there will be a HTML5 backend,
 too) and a Java server for all calculations and bookkeeping.
 
+## Resources
+
+ * [HTML5 spec](http://www.w3.org/TR/html5/)
+ * [HTML Canvas: 2D Context](http://dev.w3.org/html5/2dcontext/)
+
 [HTWK Leipzig]: http://www.htwk-leipzig.de
 [OpenLaszlo]: http://openlaszlo.org
