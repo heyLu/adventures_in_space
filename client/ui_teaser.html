@@ -7,6 +7,16 @@
 	<style type="text/css">
 	body { background-color: #000 }
 
+	#stars, #space {
+		position: fixed;
+		left: 0;
+		top: 0
+	}
+
+	#space {
+		cursor: none;
+	}
+
 	#controlbar {
 		position: fixed;
 		bottom: 0;
@@ -21,6 +31,15 @@
 </head>
 
 <body>
+
+<canvas id="stars">
+</canvas>
+
+<canvas id="stars_blink1">
+</canvas>
+
+<canvas id="stars_blink2">
+</canvas>
 
 <canvas id="space">
 Sorry, but we really need the canvas.
@@ -58,21 +77,48 @@ window.addEventListener('load', function() {
 		return color
 	}
 
+	window.StarField = function() {
+		StarField.name = "StarField"
+
+		function StarField(canvas, n, height, width) {
+			var width  = width || window.innerWidth,
+			    height = height || window.innerHeight
+
+			canvas.width  = width
+			canvas.height = height
+
+			this.canvas= canvas
+			this.ctx   = canvas.getContext('2d'),
+			this.n     = n || width * height * 0.001
+			this.stars = []
+
+			return this
+		}
+
+		StarField.prototype.draw = function() {
+			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+			for(var i = 0; i < this.n; i++) {
+					this.stars[i] = [Math.random() * this.canvas.width,
+					                 Math.random() * this.canvas.height,
+					                 starColor(i),
+					                 Math.floor(Math.random() * 2) + 1]
+					this.ctx.fillStyle = this.stars[i][2]
+					this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3])
+			}
+		}
+
+		return StarField
+	}()
+
 	var space = document.getElementById('space'),
-	    ctx   = space.getContext('2d')
-	    stars = []
+	    ctx   = space.getContext('2d'),
+	    starField = new StarField(document.getElementById('stars')),
 	    controlbar = document.getElementById('controlbar')
 
-	space.width  = window.innerWidth - 10
-	space.height = window.innerHeight - controlbar.clientHeight
-	for(var i = 0; i < window.innerWidth * window.innerHeight * 0.001; i++) {
-		stars[i] = [Math.random() * space.width,
-		            Math.random() * space.height,
-		            starColor(i),
-		            Math.floor(Math.random() * 2) + 1]
-		ctx.fillStyle = stars[i][2]
-		ctx.fillRect(stars[i][0], stars[i][1], stars[i][3], stars[i][3])
-	}
+	space.width  = window.innerWidth
+	space.height = window.innerHeight
+	starField.draw()
 
 	space.onmousemove = function(ev) {
 		ctx.fillStyle = "#000"
