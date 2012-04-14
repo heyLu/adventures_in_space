@@ -1,6 +1,6 @@
 # Adventures in space
 
-We're not so adventurours right now, sorry. More to come soonish.
+We're not so adventurous right now, sorry. More to come soonish.
 
 ## A little bit of context
 
