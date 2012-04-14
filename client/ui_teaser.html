@@ -89,8 +89,11 @@ window.addEventListener('load', function() {
 	window.StarField = function() {
 		StarField.name = "StarField"
 
-		function StarField(canvas, n, height, width) {
-			var width  = width || window.innerWidth,
+		/* Create a new StarField. Give it at least a canvas and
+		   optionally the number of stars to create, canvas width and
+		   canvas height. */
+		function StarField(canvas, n, width, height)  {
+			var width  = width  || window.innerWidth,
 			    height = height || window.innerHeight
 
 			canvas.width  = width
@@ -104,14 +107,15 @@ window.addEventListener('load', function() {
 			return this
 		}
 
+		/* Clears the canvas and draws the StarField on it. */
 		StarField.prototype.draw = function() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
 			for(var i = 0; i < this.n; i++) {
-					this.stars[i] = [Math.random() * this.canvas.width,
-					                 Math.random() * this.canvas.height,
-					                 starColor(i),
-					                 Math.floor(Math.random() * 2) + 1]
+					this.stars[i] = [Math.random() * this.canvas.width,  // x
+					                 Math.random() * this.canvas.height, // y
+					                 starColor(i),                       // colour
+					                 Math.floor(Math.random() * 2) + 1]  // size
 					this.ctx.fillStyle = this.stars[i][2]
 					this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3])
 			}
