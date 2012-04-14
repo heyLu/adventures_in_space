@@ -42,6 +42,22 @@ Sorry, but we really need the canvas.
 
 <script language="javascript">
 window.addEventListener('load', function() {
+	function starColor(n, maxVal) {
+		var n     = Math.floor(n / maxVal * 6 || Math.random() * 6)
+		    color = "#fff"
+
+		switch(n) {
+			case 0,1: color = "#fff"; break;
+			case   2: color = "#005"; break;
+			case   3: color = "#700"; break;
+			case   4: color = "#aaa"; break;
+			case   5: color = "#666"; break;
+			default : color = "#fff"
+		}
+
+		return color
+	}
+
 	var space = document.getElementById('space'),
 	    ctx   = space.getContext('2d')
 	    stars = []
@@ -49,10 +65,11 @@ window.addEventListener('load', function() {
 
 	space.width  = window.innerWidth - 10
 	space.height = window.innerHeight - controlbar.clientHeight
-	ctx.fillStyle = "#fff"
 	for(var i = 0; i < window.innerWidth * window.innerHeight * 0.001; i++) {
 		stars[i] = [Math.random() * space.width,
-		            Math.random() * space.height]
+		            Math.random() * space.height,
+		            starColor(i)]
+		ctx.fillStyle = stars[i][2]
 		ctx.fillRect(stars[i][0], stars[i][1], 2, 2)
 	}
 
@@ -60,8 +77,8 @@ window.addEventListener('load', function() {
 		ctx.fillStyle = "#000"
 		ctx.fillRect(0, 0, space.width, space.height)
 
-		ctx.fillStyle = "#fff"
 		for(var i = 0; i < stars.length; i++) {
+			ctx.fillStyle = stars[i][2]
 			ctx.fillRect(stars[i][0], stars[i][1], 2, 2)
 		}
 
