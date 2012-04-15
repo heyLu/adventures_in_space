@@ -118,7 +118,7 @@ window.addEventListener('load', function() {
 			for(var i = 0; i < this.n; i++) {
 					this.stars[i] = [Math.random() * this.canvas.width,  // x
 					                 Math.random() * this.canvas.height, // y
-					                 starColor(i),                       // colour
+					                 starColor(i, this.n),               // colour
 					                 Math.floor(Math.random() * 2) + 1]  // size
 					this.ctx.fillStyle = this.stars[i][2]
 					this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3])
