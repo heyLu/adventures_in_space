@@ -11,7 +11,7 @@
 		background-color: #000;
 	}
 
-	#stars, #stars_blink1, #stars_blink2, #space {
+	#stars, #stars_blink1, #stars_blink2, #stars_blink3, #space {
 		position: fixed;
 		left: 0;
 		top: 0
@@ -22,9 +22,22 @@
 		50% { opacity: 1.0 }
 		100% { opacity: 0.2 }
 	}
+	
+	@-moz-keyframes fade {
+		0% { opacity: 0.2 }
+		50% { opacity: 1.0 }
+		100% { opacity: 0.2 }
+	}
+	
+	@keyframes fade {
+		0% { opacity: 0.2 }
+		50% { opacity: 1.0 }
+		100% { opacity: 0.2 }
+	}
 
-	#stars_blink1 { -webkit-animation: fade 3s infinite }
-	#stars_blink2 { -webkit-animation: fade 5s infinite }
+	#stars_blink1 { -webkit-animation: fade 3s infinite; -moz-animation: fade 3s infinite; animation: fade 3s infinite }
+	#stars_blink2 { -webkit-animation: fade 5s infinite; -moz-animation: fade 5s infinite; animation: fade 5s infinite  }
+	#stars_blink3 { -webkit-animation: fade 7s infinite; -moz-animation: fade 7s infinite; animation: fade 7s infinite  }
 
 	#space {
 		cursor: none;
@@ -52,6 +65,9 @@
 </canvas>
 
 <canvas id="stars_blink2">
+</canvas>
+
+<canvas id="stars_blink3">
 </canvas>
 
 <canvas id="space">
@@ -131,9 +147,10 @@ window.addEventListener('load', function() {
 	var space = document.getElementById('space'),
 	    ctx   = space.getContext('2d'),
 	    sternleinStehen = window.innerWidth * window.innerHeight * 0.001,
-	    starField = new StarField(document.getElementById('stars'), sternleinStehen * 0.7),
-	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.2),
+	    starField = new StarField(document.getElementById('stars'), sternleinStehen * 0.4),
+	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.1),
 	    blink2 = new StarField(document.getElementById('stars_blink2'), sternleinStehen * 0.1),
+		blink2 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1),
 	    controlbar = document.getElementById('controlbar')
 
 
