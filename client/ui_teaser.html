@@ -10,6 +10,10 @@
 		font-family: "Russo One" sans-serif;
 		background-color: #000;
 	}
+	
+	input {
+		width: 6em;
+	}
 
 	#stars, #stars_blink1, #stars_blink2, #stars_blink3, #space {
 		position: fixed;
@@ -84,11 +88,30 @@ Sorry, but we really need the canvas.
 		Direction:
 		<input type="number" min="0" max="360" value="0" />
 	</label>
+	<label>
+		P-Mass (kg):
+		<input type="number" id="pmass" min="1" max="500" value="1" onchange="calc_projectile_velocity()" />
+	</label>
+	<label>
+		P-Energy (J):
+		<input type="number" id="penergy" min="1" max="999999" value="1" onchange="calc_projectile_velocity()" />
+	</label>
+	<label>
+		P-Vel (m/s):
+		<input  id="pvel" readonly="readonly" value="" />
+	</label>
 </footer>
 
 </body>
 
 <script language="javascript">
+function calc_projectile_velocity() {
+	var m = document.getElementById( "pmass" ).value;
+	var e = document.getElementById( "penergy" ).value;
+	var t = document.getElementById( "pvel" );
+	t.value = Math.sqrt(e/m);
+}
+
 window.addEventListener('load', function() {
 	function starColor(n, maxVal) {
 		var n     = Math.floor(n / maxVal * 6 || Math.random() * 6)
