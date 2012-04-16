@@ -150,7 +150,7 @@ window.addEventListener('load', function() {
 	    starField = new StarField(document.getElementById('stars'), sternleinStehen * 0.4),
 	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.1),
 	    blink2 = new StarField(document.getElementById('stars_blink2'), sternleinStehen * 0.1),
-		blink2 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1),
+	    blink3 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1),
 	    controlbar = document.getElementById('controlbar')
 
 
@@ -159,6 +159,7 @@ window.addEventListener('load', function() {
 	starField.draw()
 	blink1.draw()
 	blink2.draw()
+	blink3.draw()
 
 	space.onmousemove = function(ev) {
 		ctx.clearRect(0, 0, space.width, space.height)
