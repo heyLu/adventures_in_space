@@ -114,8 +114,8 @@ function calc_projectile_velocity() {
 
 window.addEventListener('load', function() {
 	function starColor(n, maxVal) {
-		var n     = Math.floor(n / maxVal * 6 || Math.random() * 6)
-		    color = "#fff"
+		var n     = Math.floor(n / maxVal * 6 || Math.random() * 6),
+		    color = "#fff";
 
 		switch(n) {
 			case 0,1: color = "#fff"; break;
@@ -126,45 +126,45 @@ window.addEventListener('load', function() {
 			default : color = "#fff"
 		}
 
-		return color
+		return color;
 	}
 
 	window.StarField = function() {
-		StarField.name = "StarField"
+		StarField.name = "StarField";
 
 		/* Create a new StarField. Give it at least a canvas and
 		   optionally the number of stars to create, canvas width and
 		   canvas height. */
 		function StarField(canvas, n, width, height)  {
 			var width  = width  || window.innerWidth,
-			    height = height || window.innerHeight
+			    height = height || window.innerHeight;
 
-			canvas.width  = width
-			canvas.height = height
+			canvas.width  = width;
+			canvas.height = height;
 
-			this.canvas= canvas
-			this.ctx   = canvas.getContext('2d'),
-			this.n     = n || width * height * 0.001
-			this.stars = []
+			this.canvas= canvas;
+			this.ctx   = canvas.getContext('2d');
+			this.n     = n || width * height * 0.001;
+			this.stars = [];
 
-			return this
+			return this;
 		}
 
 		/* Clears the canvas and draws the StarField on it. */
 		StarField.prototype.draw = function() {
-			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
 			for(var i = 0; i < this.n; i++) {
 					this.stars[i] = [Math.random() * this.canvas.width,  // x
 					                 Math.random() * this.canvas.height, // y
 					                 starColor(i, this.n),               // colour
-					                 Math.floor(Math.random() * 2) + 1]  // size
-					this.ctx.fillStyle = this.stars[i][2]
-					this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3])
+					                 Math.floor(Math.random() * 2) + 1]; // size
+					this.ctx.fillStyle = this.stars[i][2];
+					this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3]);
 			}
 		}
 
-		return StarField
+		return StarField;
 	}()
 
 	var space = document.getElementById('space'),
@@ -174,24 +174,24 @@ window.addEventListener('load', function() {
 	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.1),
 	    blink2 = new StarField(document.getElementById('stars_blink2'), sternleinStehen * 0.1),
 	    blink3 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1),
-	    controlbar = document.getElementById('controlbar')
+	    controlbar = document.getElementById('controlbar');
 
 
-	space.width  = window.innerWidth
-	space.height = window.innerHeight
-	starField.draw()
-	blink1.draw()
-	blink2.draw()
-	blink3.draw()
+	space.width  = window.innerWidth;
+	space.height = window.innerHeight;
+	starField.draw();
+	blink1.draw();
+	blink2.draw();
+	blink3.draw();
 
 	space.onmousemove = function(ev) {
-		ctx.clearRect(0, 0, space.width, space.height)
+		ctx.clearRect(0, 0, space.width, space.height);
 
-		ctx.fillStyle = "#f00"
-		ctx.beginPath()
-		ctx.arc(ev.clientX, ev.clientY, 10, 0, 360)
-		ctx.fill()
+		ctx.fillStyle = "#f00";
+		ctx.beginPath();
+		ctx.arc(ev.clientX, ev.clientY, 10, 0, 360);
+		ctx.fill();
 	}
-}, false)
+}, false);
 </script>
 </html>
