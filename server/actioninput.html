@@ -1,0 +1,51 @@
+<html>
+<head><title>Actioninput</title>
+<style>
+form {
+  width: 45%;
+  border-style: solid;
+  border-width: 1px;
+  float: left;
+  margin: 5px;
+  padding: 5px;
+}
+</style>
+</head>
+<body>
+<form target="resframe" method="get" action="/">
+Status<br /><input type="submit" />
+</form>
+
+
+<form target="resframe" method="get" action="/login">
+New Ship<br /><input type="submit" />
+</form>
+
+
+
+<form target="resframe" method="get" action="/accelerate">
+Accelerate<br />
+Ship: <input name="id" /><br />
+dx: <input name="dx" /><br />
+dy: <input name="dy" /><br />
+Energy: <input name="energy" /><br />
+<input type="submit" />
+</form>
+
+
+<form target="resframe" method="get" action="/shoot">
+Shoot<br />
+Ship: <input name="id" /><br />
+dx: <input name="dx" /><br />
+dy: <input name="dy" /><br />
+mass: <input name="mass" /><br />
+Energy: <input name="energy" /><br />
+<input type="submit" />
+</form>
+
+<form target="resframe" method="get" action="/reset">
+Reset<br /><input type="submit" />
+</form>
+
+</body>
+</html>
