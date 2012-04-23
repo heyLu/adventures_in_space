@@ -2,13 +2,10 @@ package server;
 
 import java.io.IOException;
 
-import game.GameWorld;
-
-
 public class Main {
 
 	public static final int FPScap =  100 /*Integer.MAX_VALUE*/;
-	public static Httpserver server;
+	public static HttpServer server;
 	
 	/**
 	 * @param args
@@ -16,7 +13,7 @@ public class Main {
 	public static void main(String[] args) {
 		game.World.reset();
 		try {
-			server = new Httpserver(8081);
+			server = new HttpServer(8081);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

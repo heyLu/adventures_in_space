@@ -9,9 +9,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Httpserver extends NanoHTTPD {
+public class HttpServer extends NanoHTTPD {
 
-	public Httpserver(int port) throws IOException {
+	public HttpServer(int port) throws IOException {
 		super(port, null);
 
 	}
@@ -60,14 +60,14 @@ public class Httpserver extends NanoHTTPD {
 		}
 		else if (uri.equalsIgnoreCase("/testinterface")) {
 			try {
-				msg = Httpserver.readFileAsString("action.html");
+				msg = HttpServer.readFileAsString("action.html");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		else if (uri.equalsIgnoreCase("/testinterface_")) {
 			try {
-				msg = Httpserver.readFileAsString("actioninput.html");
+				msg = HttpServer.readFileAsString("actioninput.html");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
