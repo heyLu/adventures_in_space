@@ -75,7 +75,11 @@ public class HttpServer extends NanoHTTPD {
 		else {
 			msg = game.World.w.json().WorldState();
 		}
-		return new NanoHTTPD.Response( HTTP_OK, MIME_HTML, msg );
+
+		Response res = new NanoHTTPD.Response( HTTP_OK, MIME_HTML, msg );
+		res.addHeader("Access-Control-Allow-Origin", "*");
+
+		return res;
 	}
 	
 	private static String readFileAsString(String filePath)
