@@ -285,7 +285,11 @@ window.addEventListener('load', function() {
 			var projectile = ad.world.projectiles[i],
 			    size = Math.max(2, projectile.size);
 
-			ad.space.fillStyle = "#fff";
+			if (projectile.owner == ad.shipId) {
+				ad.space.fillStyle = "#0f0";
+			} else {
+				ad.space.fillStyle = "#f00";
+			}
 			ad.space.fillRect(projectile.position.x, projectile.position.y, size, size);
 		}
 
