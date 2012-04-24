@@ -289,10 +289,10 @@ window.addEventListener('load', function() {
 			    dy = max_y - min_y;
 
 			ad.center = [min_x + dx / 2, min_y + dy / 2];
-			if (ad.world.ships.length == 1) {
+			if (ad.world.ships.length <= 1) {
 				ad.scale = MAX_SCALE;
 			} else {
-				ad.scale = Math.min(MAX_SCALE, Math.floor(Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8 * 100) / 100);
+				ad.scale = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
 			}
 		}
 		req.send();
