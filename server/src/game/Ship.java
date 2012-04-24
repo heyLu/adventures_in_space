@@ -18,6 +18,8 @@ public class Ship extends GameObject {
 	private double points = 0.0;
     private double removable_mass = 0.0;
     
+    private String playername = "";
+    
     
     public Ship(double mass, double size) {
         this(mass, size, 6000.0);
@@ -64,6 +66,15 @@ public class Ship extends GameObject {
     public double points(double amount) {
         this.points = Math.max(this.points+ amount, 0.0);
         return this.points();
+    }
+    
+    public String playername() {
+        return this.playername;
+    }
+    
+    public String playername(String playername) {
+    	this.playername = playername;
+        return this.playername();
     }
     
     /**
@@ -121,6 +132,7 @@ public class Ship extends GameObject {
     			"\"damage\"    : " + this.damage() + ", "+
     			"\"points\"    : " + this.points() + ", "+
     			"\"size\"  : " + this.size() + ", " +
+    			"\"playername\"  : \"" + this.playername() + "\", " + //Escape playername with slashes
     			"\"position\"  : " + GameWorldJsonFactory.PointToJson(this.position(), "x", "y") + ", " +
 				"\"velocity\"  : " + GameWorldJsonFactory.PointToJson(this.velocity(), "dx", "dy") + ", " +
     			"\"id\"        : " + id + "}";
