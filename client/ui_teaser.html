@@ -7,7 +7,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Russo+One' rel='stylesheet' type='text/css'>
 	<style type="text/css">
 	body {
-		font-family: "Russo One" sans-serif;
+		font-family: "Russo One", sans-serif;
 		background-color: #000;
 	}
 	
@@ -21,27 +21,15 @@
 		top: 0
 	}
 
-	@-webkit-keyframes fade {
-		0% { opacity: 0.2 }
-		50% { opacity: 1.0 }
-		100% { opacity: 0.2 }
-	}
-	
-	@-moz-keyframes fade {
-		0% { opacity: 0.2 }
-		50% { opacity: 1.0 }
-		100% { opacity: 0.2 }
-	}
-	
 	@keyframes fade {
 		0% { opacity: 0.2 }
 		50% { opacity: 1.0 }
 		100% { opacity: 0.2 }
 	}
 
-	#stars_blink1 { -webkit-animation: fade 3s infinite; -moz-animation: fade 3s infinite; animation: fade 3s infinite }
-	#stars_blink2 { -webkit-animation: fade 5s infinite; -moz-animation: fade 5s infinite; animation: fade 5s infinite  }
-	#stars_blink3 { -webkit-animation: fade 7s infinite; -moz-animation: fade 7s infinite; animation: fade 7s infinite  }
+	#stars_blink1 { animation: fade 3s infinite }
+	#stars_blink2 { animation: fade 5s infinite }
+	#stars_blink3 { animation: fade 7s infinite }
 
 	#space {
 		cursor: none;
@@ -194,4 +182,5 @@ window.addEventListener('load', function() {
 	}
 }, false);
 </script>
+<script language="javascript" src="prefixfree.min.js"></script>
 </html>
