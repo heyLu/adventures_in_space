@@ -183,7 +183,8 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		world: null,
-		ui:    new ShipUI(["pmass", "penergy", "pvel", "points", "velocity", "time_left"]),
+		ui:    null, //new ShipUI(["pmass", "penergy", "pvel", "points", "velocity", "time_left"]),
+		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false
 	}
@@ -216,6 +217,30 @@ window.addEventListener('load', function() {
 		}
 		req.send();
 	}, 1000);
+
+	window.setInterval(function() {
+		if (ad.world == null) {
+			return;
+		}
+
+		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
+
+		for(var i = 0; i < ad.world.ships.length; i++) {
+			var ship = ad.world.ships[i];
+
+			ad.space.fillStyle = "#fff";
+			ad.space.fillRect(ship.position.x, ship.position.y, ship.size, ship.size);
+		}
+
+		for(var i = 0; i < ad.world.projectiles.length; i++) {
+			var projectile = ad.world.projectiles[i],
+			    size = Math.max(2, projectile.size);
+
+			ad.space.fillStyle = "#fff";
+			ad.space.fillRect(projectile.position.x, projectile.position.y, size, size);
+		}
+
+	}, 500);
 }, false);
 </script>
 <script language="javascript" src="prefixfree.min.js"></script>
