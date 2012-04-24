@@ -251,6 +251,14 @@ window.addEventListener('load', function() {
 
 			console.log(ev.target.responseText);
 			ad.world = JSON.parse(ev.target.responseText);
+
+			for (var i = 0; i < ad.world.ships.length; i++) {
+				var ship = ad.world.ships[i];
+
+				if (ship.id == ad.shipId) {
+					ad.ship = ad.world.ships[i];
+				}
+			}
 		}
 		req.send();
 	}, 1000);
