@@ -121,6 +121,8 @@ function calc_projectile_velocity() {
 }
 
 window.addEventListener('load', function() {
+	window.MAX_SCALE = 2.0;
+
 	function starColor(n, maxVal) {
 		var n     = Math.floor(n / maxVal * 6 || Math.random() * 6),
 		    color = "#fff";
@@ -278,7 +280,11 @@ window.addEventListener('load', function() {
 			    dy = max_y - min_y;
 
 			ad.center = [min_x + dx / 2, min_y + dy / 2];
-			ad.scale  = Math.floor(Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.9 * 100) / 100;
+			if (ad.world.ships.length == 1) {
+				ad.scale = MAX_SCALE;
+			} else {
+				ad.scale = Math.min(MAX_SCALE, Math.floor(Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8 * 100) / 100);
+			}
 		}
 		req.send();
 	}, 1000);
