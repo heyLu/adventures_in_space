@@ -32,7 +32,7 @@
 	#stars_blink3 { animation: fade 7s infinite }
 
 	#space {
-		cursor: none;
+		cursor: crosshair;
 	}
 
 	#overlay {
@@ -215,15 +215,6 @@ window.addEventListener('load', function() {
 	blink1.draw();
 	blink2.draw();
 	blink3.draw();
-
-	space.onmousemove = function(ev) {
-		ctx.clearRect(0, 0, space.width, space.height);
-
-		ctx.fillStyle = "#f00";
-		ctx.beginPath();
-		ctx.arc(ev.clientX, ev.clientY, 10, 0, 360);
-		ctx.fill();
-	}
 
 	var ad = window.adventures = {
 		world: null,
