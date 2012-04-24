@@ -35,6 +35,16 @@
 		cursor: none;
 	}
 
+	#overlay {
+		position: fixed;
+		top: 0;
+		right: 1em;
+
+		color: white;
+	}
+
+	#points { font-size: larger }
+
 	#controlbar {
 		position: fixed;
 		bottom: 0;
@@ -65,6 +75,12 @@
 <canvas id="space">
 Sorry, but we really need the canvas.
 </canvas>
+
+<section id="overlay">
+	<p id="points">0</p>
+	<p id="velocity">0</p>
+	<p id="time_left">∞</p>
+</section>
 
 <footer id="controlbar">
 	<label>
@@ -116,6 +132,27 @@ window.addEventListener('load', function() {
 
 		return color;
 	}
+
+	window.ShipUI = function() {
+		ShipUI.name = "ShipUI";
+
+		/* Collect the element given by ids into an object for convenience
+		   access. */
+		function ShipUI(ids) {
+			for (var i = 0; i < ids.length; i++) {
+				var id     = ids[i],
+				    result = document.getElementById(id);
+
+				if(result) {
+					this[id] = result;
+				}
+			}
+
+			return this;
+		}
+
+		return ShipUI;
+	}();
 
 	window.StarField = function() {
 		StarField.name = "StarField";
