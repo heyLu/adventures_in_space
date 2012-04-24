@@ -157,6 +157,13 @@ public class GameWorld {
 				}
 				
 			}
+			if ((obj1 instanceof Ship) && (obj1 != ship)) {
+				if (ship.is_impacted_by(obj1)) {
+					// crash
+					projectile_iter.remove();
+					this.number_of_ships = this.number_of_ships - 1;
+				}
+			}
 		}
 		
 	}
