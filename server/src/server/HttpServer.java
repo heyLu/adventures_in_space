@@ -18,6 +18,7 @@ public class HttpServer extends NanoHTTPD {
 	
 	public Response serve( String uri, String method, Properties header, Properties parms, Properties files )
 	{
+		String mimeType = "text/plain";
 		String msg = "";
 		if (uri.equalsIgnoreCase("/accelerate")) {
 			try {
@@ -59,6 +60,7 @@ public class HttpServer extends NanoHTTPD {
 			System.out.println("World Reset");
 		}
 		else if (uri.equalsIgnoreCase("/testinterface")) {
+			mimeType = "text/html";
 			try {
 				msg = HttpServer.readFileAsString("action.html");
 			} catch (IOException e) {
@@ -66,6 +68,7 @@ public class HttpServer extends NanoHTTPD {
 			}
 		}
 		else if (uri.equalsIgnoreCase("/testinterface_")) {
+			mimeType = "text/html";
 			try {
 				msg = HttpServer.readFileAsString("actioninput.html");
 			} catch (IOException e) {
@@ -78,6 +81,7 @@ public class HttpServer extends NanoHTTPD {
 
 		Response res = new NanoHTTPD.Response( HTTP_OK, MIME_HTML, msg );
 		res.addHeader("Access-Control-Allow-Origin", "*");
+		res.addHeader("Content-Type", mimeType);
 
 		return res;
 	}
