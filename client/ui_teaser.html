@@ -144,7 +144,9 @@ window.addEventListener('load', function() {
 
 		/* Collect the element given by ids into an object for convenience
 		   access. */
-		function ShipUI(ids) {
+		function ShipUI(containerId, ids) {
+			this[containerId] = document.getElementById(containerId);
+
 			for (var i = 0; i < ids.length; i++) {
 				var id     = ids[i],
 				    result = document.getElementById(id);
@@ -158,11 +160,17 @@ window.addEventListener('load', function() {
 		}
 
 		ShipUI.prototype.update = function() {
-			var dx = ad.ship.velocity.dx,
-			    dy = ad.ship.velocity.dy;
 
-			this.velocity_pretty.innerText = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
-			this.velocity_raw.innerText = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
+			if (ad.ship == null) {
+				this.overlay.setAttribute("style", "visibility: hidden;");
+			} else {
+				var dx = ad.ship.velocity.dx,
+				    dy = ad.ship.velocity.dy;
+
+				this.overlay.setAttribute("style", "visibility: visible;");
+				this.velocity_pretty.innerText = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
+				this.velocity_raw.innerText = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
+			}
 		}
 
 		return ShipUI;
@@ -225,7 +233,7 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		world: null,
-		ui:    new ShipUI(["pmass", "penergy", "pvel", "points",
+		ui:    new ShipUI("overlay", ["pmass", "penergy", "pvel", "points",
 		                   "velocity_pretty", "velocity_raw", "time_left"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
@@ -258,6 +266,7 @@ window.addEventListener('load', function() {
 			}
 
 			ad.world = JSON.parse(ev.target.responseText);
+			ad.ship  = null; // To check if the player owns a ship.
 
 			var min_x, max_x, min_y, max_y;
 			min_x = min_y = Number.MAX_VALUE;
