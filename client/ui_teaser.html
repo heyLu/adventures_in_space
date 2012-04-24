@@ -40,6 +40,7 @@
 		top: 0;
 		right: 1em;
 
+		text-align: right;
 		color: white;
 	}
 
@@ -83,6 +84,7 @@ Sorry, but we really need the canvas.
 		<span id="velocity_pretty">0m/s</span><br />
 		<span id="velocity_raw">0,0</span>
 	</p>
+	<p id="relative_mouse_coords">0,0</p>
 	<p id="time_left">∞</p>
 </section>
 
@@ -168,8 +170,8 @@ window.addEventListener('load', function() {
 				    dy = ad.ship.velocity.dy;
 
 				this.overlay.setAttribute("style", "visibility: visible;");
-				this.velocity_pretty.innerText = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
-				this.velocity_raw.innerText = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
+				this.velocity_pretty.innerHTML = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
+				this.velocity_raw.innerHTML = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
 			}
 		}
 
@@ -234,12 +236,22 @@ window.addEventListener('load', function() {
 	var ad = window.adventures = {
 		world: null,
 		ui:    new ShipUI("overlay", ["pmass", "penergy", "pvel", "points",
-		                   "velocity_pretty", "velocity_raw", "time_left"]),
+		                  "velocity_pretty", "velocity_raw", "relative_mouse_coords",
+		                  "time_left"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false,
 		center: [space.width / 2, space.height / 2],
 		scale: 1
+	}
+
+	space.onmousemove = function(ev) {
+		var x  = ad.scale * (ad.ship.position.x - ad.center[0]) + ad.space.canvas.width / 2,
+		    y  = ad.scale * (ad.ship.position.y - ad.center[1]) + ad.space.canvas.height / 2,
+			 dx = ev.clientX - x,
+			 dy = ev.clientY - y;
+
+		ad.ui.relative_mouse_coords.innerHTML = "Δm" + Math.round(dx) + "," + Math.round(dy);
 	}
 
 	var loginRequest = new XMLHttpRequest();
