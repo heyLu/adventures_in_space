@@ -22,7 +22,7 @@ public class GameWorld {
     private int number_of_ships = 0;
     
 	
-    private static final double starting_distance = 1000.0;
+    private static final double starting_distance = 750.0;
     private static final double ship_size = 25.0;
     private static final double starting_mass = 160000.0;
     private static final double starting_removable_mass = 20000.0;
