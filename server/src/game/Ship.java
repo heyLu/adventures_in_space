@@ -15,6 +15,7 @@ public class Ship extends GameObject {
 	}
 
 	private double damage = 0.0;
+	private double points = 0.0;
     private double removable_mass = 0.0;
     
     
@@ -56,6 +57,15 @@ public class Ship extends GameObject {
         return this.damage();
     }
     
+    public double points() {
+        return this.points;
+    }
+    
+    public double points(double amount) {
+        this.points = Math.max(this.points+ amount, 0.0);
+        return this.points();
+    }
+    
     /**
      * Removes mass from a ship (implicit conversion from energy)
      * @param energy Energy to remove from the ship
@@ -72,6 +82,7 @@ public class Ship extends GameObject {
     public Ship projectile_impact(Projectile projectile) {
         Double impact_energy = projectile.impact_energy_with(this);
     	this.damage(impact_energy);
+    	projectile.owner().points(impact_energy);
         this.add_removable_mass(projectile.mass());
         this.accelerate_object(projectile.velocity(), impact_energy, 1.0);
         return this;
@@ -108,6 +119,7 @@ public class Ship extends GameObject {
     	return "{\"mass\" : " + this.mass() + ", "+
     			"\"rem_mass\"  : " + removable_mass + ", "+
     			"\"damage\"    : " + this.damage() + ", "+
+    			"\"points\"    : " + this.points() + ", "+
     			"\"size\"  : " + this.size() + ", " +
     			"\"position\"  : " + GameWorldJsonFactory.PointToJson(this.position(), "x", "y") + ", " +
 				"\"velocity\"  : " + GameWorldJsonFactory.PointToJson(this.velocity(), "dx", "dy") + ", " +
