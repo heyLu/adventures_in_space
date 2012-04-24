@@ -188,6 +188,17 @@ window.addEventListener('load', function() {
 		stop: false
 	}
 
+	var loginRequest = new XMLHttpRequest();
+	loginRequest.open('GET', "http://localhost:8081/login");
+	loginRequest.onreadystatechange = function(ev) {
+		if (ev.target.readyState != 4) {
+			return;
+		}
+
+		ad.shipId = JSON.parse(ev.target.responseText).id;
+	}
+	loginRequest.send();
+
 	window.setInterval(function() {
 		if (ad.stop) {
 			return;
