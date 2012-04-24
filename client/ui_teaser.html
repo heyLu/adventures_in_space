@@ -151,6 +151,13 @@ window.addEventListener('load', function() {
 			return this;
 		}
 
+		ShipUI.prototype.update = function() {
+			var dx = ad.ship.velocity.dx,
+			    dy = ad.ship.velocity.dy;
+
+			this.velocity.innerText = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
+		}
+
 		return ShipUI;
 	}();
 
@@ -220,7 +227,7 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		world: null,
-		ui:    null, //new ShipUI(["pmass", "penergy", "pvel", "points", "velocity", "time_left"]),
+		ui:    new ShipUI(["pmass", "penergy", "pvel", "points", "velocity", "time_left"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false
@@ -285,6 +292,7 @@ window.addEventListener('load', function() {
 			ad.space.fillRect(projectile.position.x, projectile.position.y, size, size);
 		}
 
+		ad.ui.update();
 	}, 500);
 }, false);
 </script>
