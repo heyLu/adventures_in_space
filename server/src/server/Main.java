@@ -5,6 +5,7 @@ import java.io.IOException;
 public class Main {
 
 	public static final int FPScap =  100 /*Integer.MAX_VALUE*/;
+	public static final double MAX_SIMU_FRAME =  0.5; /*Integer.MAX_VALUE*/;
 	public static HttpServer server;
 	
 	/**
@@ -26,6 +27,10 @@ public class Main {
 		long end_frame;
 		while (true) {
 			start_frame = System.currentTimeMillis();
+			while (framelength > MAX_SIMU_FRAME) {
+				framelength = framelength - MAX_SIMU_FRAME;
+				game.World.w.simulate_world(MAX_SIMU_FRAME);
+			}
 			game.World.w.simulate_world(framelength);
 			long calctime = System.currentTimeMillis() - start_frame;
 			try {
