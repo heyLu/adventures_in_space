@@ -180,6 +180,31 @@ window.addEventListener('load', function() {
 		ctx.arc(ev.clientX, ev.clientY, 10, 0, 360);
 		ctx.fill();
 	}
+
+	var ad = window.adventures = {
+		world: null,
+		ui:    new ShipUI(["pmass", "penergy", "pvel", "points", "velocity", "time_left"]),
+		starFields: [starField, blink1, blink2, blink3],
+		stop: false
+	}
+
+	window.setInterval(function() {
+		if (ad.stop) {
+			return;
+		}
+
+		var req = new XMLHttpRequest();
+		req.open('GET', "http://localhost:8081/world");
+		req.onreadystatechange = function(ev) {
+			if (ev.target.readyState != 4) {
+				return;
+			}
+
+			console.log(ev.target.responseText);
+			ad.world = JSON.parse(ev.target.responseText);
+		}
+		req.send();
+	}, 1000);
 }, false);
 </script>
 <script language="javascript" src="prefixfree.min.js"></script>
