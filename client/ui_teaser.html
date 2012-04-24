@@ -44,6 +44,7 @@
 	}
 
 	#points { font-size: larger }
+	#velocity_raw { font-size: smaller }
 
 	#controlbar {
 		position: fixed;
@@ -78,7 +79,10 @@ Sorry, but we really need the canvas.
 
 <section id="overlay">
 	<p id="points">0</p>
-	<p id="velocity">0</p>
+	<p>
+		<span id="velocity_pretty">0m/s</span><br />
+		<span id="velocity_raw">0,0</span>
+	</p>
 	<p id="time_left">∞</p>
 </section>
 
@@ -155,7 +159,8 @@ window.addEventListener('load', function() {
 			var dx = ad.ship.velocity.dx,
 			    dy = ad.ship.velocity.dy;
 
-			this.velocity.innerText = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
+			this.velocity_pretty.innerText = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
+			this.velocity_raw.innerText = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
 		}
 
 		return ShipUI;
@@ -218,7 +223,8 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		world: null,
-		ui:    new ShipUI(["pmass", "penergy", "pvel", "points", "velocity", "time_left"]),
+		ui:    new ShipUI(["pmass", "penergy", "pvel", "points",
+		                   "velocity_pretty", "velocity_raw", "time_left"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false
