@@ -81,6 +81,7 @@ Sorry, but we really need the canvas.
 </canvas>
 
 <section id="overlay">
+	<p id="name">space cadet</p>
 	<p id="points">0</p>
 	<p>
 		<span id="mass">0kg</span><br />
@@ -167,6 +168,7 @@ window.addEventListener('load', function() {
 
 				this.overlay.setAttribute("style", "visibility: visible;");
 
+				this.name.innerHTML   = ad.ship.playername;
 				this.points.innerHTML = Math.round(ad.ship.points);
 
 				this.mass.innerHTML  = ad.ship.mass + "kg";
@@ -253,7 +255,7 @@ window.addEventListener('load', function() {
 		world: null,
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
-		                   "time_left"]),
+		                   "time_left", "name"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false,
