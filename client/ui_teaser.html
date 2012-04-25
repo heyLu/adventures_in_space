@@ -181,6 +181,8 @@ window.addEventListener('load', function() {
 			    dx = ev.clientX - x,
 			    dy = ev.clientY - y;
 
+			ad.d = [dx, dy];
+
 			ad.ui.relative_mouse_coords.innerHTML = "Δm" + Math.round(dx) + "," + Math.round(dy);
 		}
 
@@ -259,6 +261,35 @@ window.addEventListener('load', function() {
 		ad.lastEv = ev;
 
 		ad.ui.updateMouse(ev);
+	}
+
+	space.onmousedown = function(ev) {
+		if (ad.ship == null) {
+			return;
+		}
+
+		var req = new XMLHttpRequest(),
+		    shooting = ev.shiftKey,
+		    url = "http://localhost:8081/";
+
+		if (shooting) {
+			url += "shoot?";
+			url += "dx=" + ad.d[0]
+			url += "&dy=" + ad.d[1];
+			url += "&mass=" + ad.ui.pmass.value;
+		} else {
+			url += "accelerate?";
+			url += "dx=" + (-1) * ad.d[0];
+			url += "&dy=" + (-1) * ad.d[1];
+		}
+		url += "&energy=" + ad.ui.penergy.value;
+		url += "&id=" + ad.ship.id;
+
+		console.log(url);
+
+		req.open('GET', url);
+		req.onreadystatechange = function(ev) { console.log(ev); };
+		req.send();
 	}
 
 	var loginRequest = new XMLHttpRequest();
