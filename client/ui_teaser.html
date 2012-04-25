@@ -80,6 +80,9 @@
 Sorry, but we really need the canvas.
 </canvas>
 
+<img id="friendlyShip" type="image/svg+xml" src="./assets/ship_f.svg" />
+<img id="evilShip" type="image/svg+xml" src="./assets/ship_e.svg" />
+
 <section id="overlay">
 	<p id="name">space cadet</p>
 	<p id="points">0</p>
@@ -242,7 +245,6 @@ window.addEventListener('load', function() {
 	    blink3 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1),
 	    controlbar = document.getElementById('controlbar');
 
-
 	space.width  = window.innerWidth;
 	space.height = window.innerHeight;
 	starField.draw();
@@ -252,6 +254,8 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		server: "http://localhost:8081/",
+		friendlyShip: document.getElementById("friendlyShip"),
+		evilShip: document.getElementById("evilShip"),
 		world: null,
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
@@ -269,6 +273,9 @@ window.addEventListener('load', function() {
 	calc_projectile_velocity();
 	ad.ui.pmass.oninput  = calc_projectile_velocity;
 	ad.ui.energy.oninput = calc_projectile_velocity;
+
+	ad.evilShip.setAttribute("style", "visibility: hidden;");
+	ad.friendlyShip.setAttribute("style", "visibility: hidden;");
 
 	space.onmousemove = function(ev) {
 		ad.lastEv = ev;
@@ -439,22 +446,13 @@ window.addEventListener('load', function() {
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
 
 		for(var i = 0; i < ad.world.ships.length; i++) {
-			var ship = ad.world.ships[i];
+			var ship = ad.world.ships[i],
+			    shipImg = ship.id == ad.shipId ? ad.friendlyShip : ad.evilShip;
 
-			if (ship.id == ad.shipId) {
-				ad.space.fillStyle = "#0ff";
-			} else {
-				ad.space.fillStyle = "#fff";
-			}
-			ad.space.fillRect(ad.scale * (ship.position.x - ad.center[0] - ship.size / 2) + ad.space.canvas.width / 2,
+			ad.space.drawImage(shipImg,
+			                  ad.scale * (ship.position.x - ad.center[0] - ship.size / 2) + ad.space.canvas.width / 2,
 			                  ad.scale * (ship.position.y - ad.center[1] - ship.size / 2) + ad.space.canvas.height / 2,
 			                  Math.max(3, ad.scale * ship.size), Math.max(3, ad.scale * ship.size));
-
-			ad.space.fillStyle = "#000";
-			ad.space.fillText(ship.id, ad.scale * (ship.position.x - ad.center[0]) + ad.space.canvas.width / 2,
-			                     ad.scale * (ship.position.y - ad.center[1]) + ad.space.canvas.height / 2,
-			                     Math.max(3, ad.scale * ship.size));
-
 		}
 
 		for(var i = 0; i < ad.world.projectiles.length; i++) {
