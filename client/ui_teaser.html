@@ -476,8 +476,12 @@ window.addEventListener('load', function() {
 
 		for(var i = 0; i < ad.world.ships.length; i++) {
 			var ship = ad.world.ships[i],
-			    shipImg = ship.id == ad.shipId ? ad.friendlyShip : ad.evilShip;
-			
+			    shipImg = ship.id == ad.shipId ? ad.friendlyShip : ad.evilShip,
+				 vx = ship.velocity.dx, vy = ship.velocity.dy,
+				 nv = Math.sqrt(vx * vx + vy * vy),
+				 nx = vx / nv, ny = vy / nv,
+				 angle = -Math.acos(nx * 0 + ny * -1);
+
 			var now_position = [];
 			now_position[0] = ship.position.x - ad.center[0];
 			now_position[1] = ship.position.y - ad.center[1];
@@ -495,11 +499,16 @@ window.addEventListener('load', function() {
 				ad.scale * (now_position[1]) + ad.space.canvas.height / 2
 			);
 			ad.space.stroke();
-			
+
+			ad.space.save();
+			ad.space.translate(ad.scale * now_position[0] + ad.space.canvas.width / 2,
+			                   ad.scale * now_position[1] + ad.space.canvas.height / 2);
+			ad.space.rotate(angle);
 			ad.space.drawImage(shipImg,
-			                  ad.scale * (now_position[0] - ship.size / 2) + ad.space.canvas.width / 2,
-			                  ad.scale * (now_position[1] - ship.size / 2) + ad.space.canvas.height / 2,
+			                  ad.scale * (-ship.size / 2),
+			                  ad.scale * (-ship.size / 2),
 			                  Math.max(3, ad.scale * ship.size), Math.max(3, ad.scale * ship.size));
+			ad.space.restore();
 		}
 
 		for(var i = 0; i < ad.world.projectiles.length; i++) {
