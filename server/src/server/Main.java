@@ -31,7 +31,9 @@ public class Main {
 				framelength = framelength - MAX_SIMU_FRAME;
 				game.World.w.simulate_world(MAX_SIMU_FRAME);
 			}
+			game.World.w.WorldLock.lock();
 			game.World.w.simulate_world(framelength);
+			game.World.w.WorldLock.unlock();
 			long calctime = System.currentTimeMillis() - start_frame;
 			try {
 				Thread.sleep(Math.max((long) Math.floor((1.0 / FPScap - calctime)*1000),0));

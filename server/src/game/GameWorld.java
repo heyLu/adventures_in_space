@@ -6,12 +6,17 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
  * @author maweki
  */
 public class GameWorld {
+	public Lock WorldLock;
+	
+	
 	/**
 	 * Framecounter between messages
 	 */
@@ -81,6 +86,7 @@ public class GameWorld {
 		this.objects = new HashSet<GameObject>();
 		this.json = new GameWorldJsonFactory(this);
 		this.last_message = System.currentTimeMillis();
+		this.WorldLock = new ReentrantLock();
 	}
 
     /**

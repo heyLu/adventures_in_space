@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class HttpServer extends NanoHTTPD {
 
@@ -20,65 +21,74 @@ public class HttpServer extends NanoHTTPD {
 	{
 		String mimeType = "text/plain";
 		String msg = "";
-		if (uri.equalsIgnoreCase("/accelerate")) {
-			try {
-				double dx = Double.parseDouble(parms.getProperty("dx"));
-				double dy = Double.parseDouble(parms.getProperty("dy"));
-				double energy = Double.parseDouble(parms.getProperty("energy"));
-				int shipid = Integer.parseInt(parms.getProperty("id"));
-				game.World.w.accelerate_ship(new Point2D.Double(dx, dy), energy, shipid);
+		
+		try {
+			if (World.w.WorldLock.tryLock() || World.w.WorldLock.tryLock(500, TimeUnit.MILLISECONDS)) {
+				if (uri.equalsIgnoreCase("/accelerate")) {
+					try {
+						double dx = Double.parseDouble(parms.getProperty("dx"));
+						double dy = Double.parseDouble(parms.getProperty("dy"));
+						double energy = Double.parseDouble(parms.getProperty("energy"));
+						int shipid = Integer.parseInt(parms.getProperty("id"));
+						game.World.w.accelerate_ship(new Point2D.Double(dx, dy), energy, shipid);
+						msg = "{\"id\" : " + shipid + " }";
+					}
+					catch (Exception e) {
+						// send error on out of energy exception
+						msg = "";
+					}
+				}
+				else if (uri.equalsIgnoreCase("/shoot")) {
+					try {
+						double dx = Double.parseDouble(parms.getProperty("dx"));
+						double dy = Double.parseDouble(parms.getProperty("dy"));
+						double energy = Double.parseDouble(parms.getProperty("energy"));
+						double mass = Double.parseDouble(parms.getProperty("mass"));
+						int shipid = Integer.parseInt(parms.getProperty("id"));
+						int p = game.World.w.shoot(new Point2D.Double(dx, dy), energy, mass, shipid);
+						msg = "{\"id\" : " + p + " }";
+					}
+					catch (Exception e) {
+						// send error on out of energy exception
+						msg = "";
+					}
+				}
+				else if (uri.equalsIgnoreCase("/login")) {
+					Ship s = World.w.new_ship();
+					if (s != null) {
+						msg = "{\"id\" : " + s.id + " }";
+					}
+				}
+				else if (uri.equalsIgnoreCase("/reset")) {
+					World.reset();
+					msg="World Reset";
+					System.out.println("World Reset");
+				}
+				else if (uri.equalsIgnoreCase("/testinterface")) {
+					mimeType = "text/html";
+					try {
+						msg = HttpServer.readFileAsString("action.html");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				else if (uri.equalsIgnoreCase("/testinterface_")) {
+					mimeType = "text/html";
+					try {
+						msg = HttpServer.readFileAsString("actioninput.html");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				else {
+					msg = game.World.w.json().WorldState();
+				}
 			}
-			catch (Exception e) {
-				// send error on out of energy exception
-				msg = "";
-			}
+			World.w.WorldLock.unlock();
+		} catch (InterruptedException e) {
+			msg = "timeout error";
+			e.printStackTrace();
 		}
-		else if (uri.equalsIgnoreCase("/shoot")) {
-			try {
-				double dx = Double.parseDouble(parms.getProperty("dx"));
-				double dy = Double.parseDouble(parms.getProperty("dy"));
-				double energy = Double.parseDouble(parms.getProperty("energy"));
-				double mass = Double.parseDouble(parms.getProperty("mass"));
-				int shipid = Integer.parseInt(parms.getProperty("id"));
-				int p = game.World.w.shoot(new Point2D.Double(dx, dy), energy, mass, shipid);
-				msg = "{\"id\" : " + p + " }";
-			}
-			catch (Exception e) {
-				// send error on out of energy exception
-				msg = "";
-			}
-		}
-		else if (uri.equalsIgnoreCase("/login")) {
-			Ship s = World.w.new_ship();
-			if (s != null) {
-				msg = "{\"id\" : " + s.id + " }";
-			}
-		}
-		else if (uri.equalsIgnoreCase("/reset")) {
-			World.reset();
-			msg="World Reset";
-			System.out.println("World Reset");
-		}
-		else if (uri.equalsIgnoreCase("/testinterface")) {
-			mimeType = "text/html";
-			try {
-				msg = HttpServer.readFileAsString("action.html");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		else if (uri.equalsIgnoreCase("/testinterface_")) {
-			mimeType = "text/html";
-			try {
-				msg = HttpServer.readFileAsString("actioninput.html");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		else {
-			msg = game.World.w.json().WorldState();
-		}
-
 		Response res = new NanoHTTPD.Response( HTTP_OK, MIME_HTML, msg );
 		res.addHeader("Access-Control-Allow-Origin", "*");
 		res.addHeader("Content-Type", mimeType);
