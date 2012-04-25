@@ -55,6 +55,10 @@ public class HttpServer extends NanoHTTPD {
 				}
 				else if (uri.equalsIgnoreCase("/login")) {
 					Ship s = World.w.new_ship();
+					String name = parms.getProperty("playername");
+					if (null != name) {
+						s.playername(name);
+					}
 					if (s != null) {
 						msg = "{\"id\" : " + s.id + " }";
 					}
