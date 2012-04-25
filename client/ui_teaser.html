@@ -90,21 +90,12 @@ Sorry, but we really need the canvas.
 
 <footer id="controlbar">
 	<label>
-		Acceleration:
-		<input type="number" min="0" max="100" value="10" />
-	</label>
-
-	<label>
-		Direction:
-		<input type="number" min="0" max="360" value="0" />
-	</label>
-	<label>
 		P-Mass (kg):
-		<input type="number" id="pmass" min="1" max="500" value="1" onchange="calc_projectile_velocity()" />
+		<input type="number" id="pmass" min="1" max="500" value="10" />
 	</label>
 	<label>
-		P-Energy (J):
-		<input type="number" id="penergy" min="1" max="999999" value="1" onchange="calc_projectile_velocity()" />
+		Energy (J):
+		<input type="number" id="energy" min="1" max="5000" value="500" />
 	</label>
 	<label>
 		P-Vel (m/s):
@@ -115,15 +106,16 @@ Sorry, but we really need the canvas.
 </body>
 
 <script language="javascript">
-function calc_projectile_velocity() {
-	var m = document.getElementById( "pmass" ).value;
-	var e = document.getElementById( "penergy" ).value;
-	var t = document.getElementById( "pvel" );
-	t.value = Math.sqrt(e/m);
-}
-
 window.addEventListener('load', function() {
 	window.MAX_SCALE = 2.0;
+
+	function calc_projectile_velocity() {
+		var m = ad.ui.pmass.value,
+		    e = ad.ui.energy.value,
+		    v = ad.ui.pvel;
+
+		v.value = Math.sqrt(e / m);
+	}
 
 	function starColor(n, maxVal) {
 		var n     = Math.floor(n / maxVal * 6 || Math.random() * 6),
@@ -246,7 +238,7 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		world: null,
-		ui:    new ShipUI(["overlay", "pmass", "penergy", "pvel", "points",
+		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points",
 		                  "velocity_pretty", "velocity_raw", "relative_mouse_coords",
 		                  "time_left"]),
 		space: ctx,
@@ -256,6 +248,10 @@ window.addEventListener('load', function() {
 		scale: 1,
 		lastEv: { clientX: space.width / 2, clientY: space.height / 2 }
 	}
+
+	calc_projectile_velocity();
+	ad.ui.pmass.oninput  = calc_projectile_velocity;
+	ad.ui.energy.oninput = calc_projectile_velocity;
 
 	space.onmousemove = function(ev) {
 		ad.lastEv = ev;
@@ -282,7 +278,7 @@ window.addEventListener('load', function() {
 			url += "dx=" + (-1) * ad.d[0];
 			url += "&dy=" + (-1) * ad.d[1];
 		}
-		url += "&energy=" + ad.ui.penergy.value;
+		url += "&energy=" + ad.ui.energy.value;
 		url += "&id=" + ad.ship.id;
 
 		console.log(url);
