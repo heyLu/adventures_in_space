@@ -111,7 +111,7 @@ Sorry, but we really need the canvas.
 
 <script language="javascript">
 window.addEventListener('load', function() {
-	window.MAX_SCALE = 2.0;
+	window.MAX_SCALE = 1.0;
 
 	function calc_projectile_velocity() {
 		var m = ad.ui.pmass.value,
@@ -227,7 +227,7 @@ window.addEventListener('load', function() {
 		}
 
 		return StarField;
-	}()
+	}();
 
 	var space = document.getElementById('space'),
 	    ctx   = space.getContext('2d'),
@@ -257,7 +257,9 @@ window.addEventListener('load', function() {
 		stop: false,
 		center: [space.width / 2, space.height / 2],
 		scale: 1,
-		lastEv: { clientX: space.width / 2, clientY: space.height / 2 }
+		lastEv: { clientX: space.width / 2, clientY: space.height / 2 },
+		lastFrameWasReal: true,
+		lastFrame: 100
 	}
 
 	calc_projectile_velocity();
@@ -310,6 +312,7 @@ window.addEventListener('load', function() {
 	}
 	loginRequest.send();
 
+	/* polling the server for the world state */
 	window.setInterval(function() {
 		if (ad.stop) {
 			return;
@@ -351,11 +354,80 @@ window.addEventListener('load', function() {
 			} else {
 				ad.scale = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
 			}
+
+			ad.lastFrameWasReal = true;
 		}
 		req.send();
-	}, 1000);
+	}, 500);
 
 	window.setInterval(function() {
+		function clone(obj) {
+			var newObj = {};
+			newObj.__proto__ = obj;
+			return obj;
+		}
+
+		function interpolate(ary) {
+			var interpolatedAry = [];
+
+			for (var i = 0; i < ary.length; i++) {
+				var cur = clone(ary[i]);
+
+				cur.position.x += cur.velocity.dx * (frameLength / 1000);
+				cur.position.y += cur.velocity.dy * (frameLength / 1000);
+
+				if (cur.points !== undefined) { /* is a ship */
+					min_x = Math.min(cur.position.x, min_x);
+					max_x = Math.max(cur.position.x, max_x);
+					min_y = Math.min(cur.position.y, min_y);
+					max_y = Math.max(cur.position.y, max_y);
+				}
+
+				if (cur.id == ad.shipId) {
+					interpolatedShip = cur;
+				}
+				interpolatedAry[i] = cur;
+			}
+
+			return interpolatedAry;
+		}
+
+		if (ad.lastFrameWasReal) {
+			draw();
+			ad.lastFrameWasReal = false;
+			return;
+		}
+
+		var min_x, max_x, min_y, max_y,
+		    min_x = min_y = Number.MAX_VALUE,
+		    max_x = max_y = -Number.MAX_VALUE,
+		    frameLength = new Date().getTime() - ad.lastFrame,
+		    interpolatedShip        = null,
+		    interpolatedShips       = interpolate(ad.world.ships),
+		    interpolatedProjectiles = interpolate(ad.world.projectiles);
+
+		if (!ad.lastFrameWasReal) {
+			ad.ship              = interpolatedShip;
+			ad.world.ships       = interpolatedShips;
+			ad.world.projectiles = interpolatedProjectiles;
+
+			var dx = max_x - min_x,
+			    dy = max_y - min_y;
+
+			ad.center = [min_x + dx / 2, min_y + dy / 2];
+			if (ad.world.ships.length <= 1) {
+				ad.scale = MAX_SCALE;
+			} else {
+				ad.scale = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
+			}
+		}
+
+		draw();
+		ad.lastFrame = new Date().getTime();
+	}, 1000 / 60);
+
+	/* drawing all the game objects */
+	window.draw = function() {
 		if (ad.world == null) {
 			return;
 		}
@@ -401,7 +473,7 @@ window.addEventListener('load', function() {
 		ad.space.fillText("100m", 10, 10);
 
 		ad.ui.update();
-	}, 500);
+	}
 }, false);
 </script>
 <script language="javascript" src="prefixfree.min.js"></script>
