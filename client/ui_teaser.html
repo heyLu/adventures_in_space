@@ -146,9 +146,7 @@ window.addEventListener('load', function() {
 
 		/* Collect the element given by ids into an object for convenience
 		   access. */
-		function ShipUI(containerId, ids) {
-			this[containerId] = document.getElementById(containerId);
-
+		function ShipUI(ids) {
 			for (var i = 0; i < ids.length; i++) {
 				var id     = ids[i],
 				    result = document.getElementById(id);
@@ -235,7 +233,7 @@ window.addEventListener('load', function() {
 
 	var ad = window.adventures = {
 		world: null,
-		ui:    new ShipUI("overlay", ["pmass", "penergy", "pvel", "points",
+		ui:    new ShipUI(["overlay", "pmass", "penergy", "pvel", "points",
 		                  "velocity_pretty", "velocity_raw", "relative_mouse_coords",
 		                  "time_left"]),
 		space: ctx,
