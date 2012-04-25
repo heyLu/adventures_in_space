@@ -371,17 +371,17 @@ window.addEventListener('load', function() {
 		}
 
 		for(var i = 0; i < ad.world.projectiles.length; i++) {
-			var projectile = ad.world.projectiles[i],
-			    size = Math.max(2, projectile.size);
+			var projectile  = ad.world.projectiles[i],
+			    displaySize = Math.max(2, ad.scale * projectile.size);
 
 			if (projectile.owner == ad.shipId) {
 				ad.space.fillStyle = "#0f0";
 			} else {
 				ad.space.fillStyle = "#f00";
 			}
-			ad.space.fillRect(ad.scale * (projectile.position.x - ad.center[0] - size / 2) + ad.space.canvas.width / 2,
-			                  ad.scale * (projectile.position.y - ad.center[1] - size / 2) + ad.space.canvas.height / 2,
-			                  ad.scale * size, ad.scale * size);
+			ad.space.fillRect(ad.scale * (projectile.position.x - ad.center[0] - projectile.size / 2) + ad.space.canvas.width / 2,
+			                  ad.scale * (projectile.position.y - ad.center[1] - projectile.size / 2) + ad.space.canvas.height / 2,
+			                  displaySize, displaySize);
 		}
 
 		ad.space.fillStyle = "#aaa";
