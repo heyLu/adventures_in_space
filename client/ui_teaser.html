@@ -333,9 +333,9 @@ window.addEventListener('load', function() {
 	
 	space.onmousewheel = function(ev) {
 		if (ev.wheelDelta > 0) {
-			ad.timeScale += 1;
+			ad.timeScale += (ev.shiftKey ? 10 : 1);
 		} else {
-			ad.timeScale = Math.max(0, ad.timeScale - 1);
+			ad.timeScale = Math.max(0, ad.timeScale - (ev.shiftKey ? 10 : 1));
 		}
 	}
 
