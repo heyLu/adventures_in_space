@@ -49,11 +49,25 @@
 	#points { font-size: larger }
 	#velocity_raw, #rmass { font-size: smaller }
 
+	#time_scale {
+		position: absolute;
+		bottom: 1.7em;
+		right: 1em;
+
+		margin: 0;
+		padding: 0;
+
+		z-index: 43;
+
+		color: #fff;
+	}
+
 	#controlbar {
 		position: fixed;
 		bottom: 0;
 
 		width: 100%;
+		height: 1.5em;
 
 		background-color: #222;
 		color: #aaa;
@@ -97,6 +111,8 @@ Sorry, but we really need the canvas.
 	<p id="relative_mouse_coords">0,0</p>
 	<p id="time_left">∞</p>
 </section>
+
+<p id="time_scale">Δt+0s</p>
 
 <footer id="controlbar">
 	<label>
@@ -180,6 +196,8 @@ window.addEventListener('load', function() {
 				this.velocity_pretty.innerHTML = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
 				this.velocity_raw.innerHTML = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
 
+				this.time_scale.innerHTML = "Δt+" + ad.timeScale + "s";
+
 				this.updateMouse(ad.lastEv);
 			}
 		}
@@ -259,7 +277,7 @@ window.addEventListener('load', function() {
 		world: null,
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
-		                   "time_left", "name"]),
+		                   "time_left", "name", "time_scale"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false,
