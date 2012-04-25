@@ -247,6 +247,7 @@ window.addEventListener('load', function() {
 	blink3.draw();
 
 	var ad = window.adventures = {
+		server: "http://localhost:8081/",
 		world: null,
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
@@ -276,7 +277,7 @@ window.addEventListener('load', function() {
 
 		var req = new XMLHttpRequest(),
 		    shooting = ev.shiftKey,
-		    url = "http://localhost:8081/";
+		    url = ad.server;
 
 		if (shooting) {
 			url += "shoot?";
@@ -299,7 +300,7 @@ window.addEventListener('load', function() {
 	}
 
 	var loginRequest = new XMLHttpRequest();
-	loginRequest.open('GET', "http://localhost:8081/login");
+	loginRequest.open('GET', ad.server + "login");
 	loginRequest.onreadystatechange = function(ev) {
 		if (ev.target.readyState != 4) {
 			return;
@@ -315,7 +316,7 @@ window.addEventListener('load', function() {
 		}
 
 		var req = new XMLHttpRequest();
-		req.open('GET', "http://localhost:8081/world");
+		req.open('GET', ad.server + "world");
 		req.onreadystatechange = function(ev) {
 			if (ev.target.readyState != 4) {
 				return;
