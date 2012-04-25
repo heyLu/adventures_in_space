@@ -1,6 +1,8 @@
 package game;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+
 import game.OutOfEnergyException;
 
 /**
@@ -9,10 +11,28 @@ import game.OutOfEnergyException;
  */
 public class Ship extends GameObject {
     @Override
+	public Double move(double time) {
+		this.action_timeout = Math.max(0.0,(this.action_timeout - time));
+		return super.move(time);
+	}
+    
+    public boolean action_possible() {
+    	return this.action_timeout == 0.0;
+    }
+
+	@Override
 	public String toString() {
 		return "Ship [removable_mass=" + removable_mass + ", toString()="
 				+ super.toString() + "]";
 	}
+    
+    public double action_timeout = 0.0;
+    
+    public void reset_action_timeout() {
+    	this.action_timeout = 1.0;
+    }
+    
+   
 
     /**
      * Damage the ship has received, equivalent to kinetic energy received on projectile impacts (J)
@@ -162,7 +182,7 @@ public class Ship extends GameObject {
      * @return own ship
      */
     public Ship projectile_impact(Projectile projectile) {
-        Double impact_energy = projectile.impact_energy_with(this);
+        double impact_energy = projectile.impact_energy_with(this);
         
         /* Add damage/points to players */
     	this.damage(impact_energy);

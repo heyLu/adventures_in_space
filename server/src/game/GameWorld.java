@@ -313,8 +313,12 @@ public class GameWorld {
 			GameObject o = iter.next();
 			if ((o.id == id) && (o instanceof Ship)) {
 				Ship s = (Ship) o;
-				Projectile p = s.create_projectile(direction, mass, energy);
-				return p.id;
+				if (s.action_possible()) {
+					s.reset_action_timeout();
+					Projectile p = s.create_projectile(direction, mass, energy);
+					return p.id;
+				}
+				return 0;
 			}
 		}
 		return 0;
@@ -333,7 +337,10 @@ public class GameWorld {
 			GameObject o = iter.next();
 			if ((o.id == id) && (o instanceof Ship)) {
 				Ship s = (Ship) o;
-				s.accelerate_ship(direction, energy, 1.0);
+				if (s.action_possible()) {
+					s.reset_action_timeout();
+					s.accelerate_ship(direction, energy, 1.0);
+				}
 			}
 		}
 	}
