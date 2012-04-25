@@ -167,7 +167,7 @@ window.addEventListener('load', function() {
 
 				this.overlay.setAttribute("style", "visibility: visible;");
 
-				this.points.innerHTML = ad.ship.points;
+				this.points.innerHTML = Math.round(ad.ship.points);
 
 				this.mass.innerHTML  = ad.ship.mass + "kg";
 				this.rmass.innerHTML = ad.ship.rem_mass + "kg";
