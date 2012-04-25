@@ -265,6 +265,7 @@ window.addEventListener('load', function() {
 		stop: false,
 		center: [space.width / 2, space.height / 2],
 		scale: 1,
+		timeScale: 0,
 		lastEv: { clientX: space.width / 2, clientY: space.height / 2 },
 		lastFrameWasReal: true,
 		lastFrame: 100
@@ -310,6 +311,14 @@ window.addEventListener('load', function() {
 		req.open('GET', url);
 		req.onreadystatechange = function(ev) { console.log(ev); };
 		req.send();
+	}
+	
+	space.onmousewheel = function(ev) {
+		if (ev.wheelDelta > 0) {
+			ad.timeScale += 1;
+		} else {
+			ad.timeScale = Math.max(0, ad.timeScale - 1);
+		}
 	}
 
 	var loginRequest = new XMLHttpRequest();
@@ -444,14 +453,34 @@ window.addEventListener('load', function() {
 		}
 
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
+		ad.space.fillStyle = "#fff";
+		ad.space.strokeStyle = "#fff";
 
 		for(var i = 0; i < ad.world.ships.length; i++) {
 			var ship = ad.world.ships[i],
 			    shipImg = ship.id == ad.shipId ? ad.friendlyShip : ad.evilShip;
-
+			
+			var now_position = [];
+			now_position[0] = ship.position.x - ad.center[0];
+			now_position[1] = ship.position.y - ad.center[1];
+			
+			var future_position = [];
+			future_position[0] = ship.position.x + ship.velocity.dx * ad.timeScale - ad.center[0];
+			future_position[1] = ship.position.y + ship.velocity.dy * ad.timeScale - ad.center[1];
+			
+			ad.space.beginPath();
+			ad.space.moveTo(
+				ad.scale * (future_position[0]) + ad.space.canvas.width / 2,
+				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
+			ad.space.lineTo(
+				ad.scale * (now_position[0]) + ad.space.canvas.width / 2,
+				ad.scale * (now_position[1]) + ad.space.canvas.height / 2
+			);
+			ad.space.stroke();
+			
 			ad.space.drawImage(shipImg,
-			                  ad.scale * (ship.position.x - ad.center[0] - ship.size / 2) + ad.space.canvas.width / 2,
-			                  ad.scale * (ship.position.y - ad.center[1] - ship.size / 2) + ad.space.canvas.height / 2,
+			                  ad.scale * (now_position[0] - ship.size / 2) + ad.space.canvas.width / 2,
+			                  ad.scale * (now_position[1] - ship.size / 2) + ad.space.canvas.height / 2,
 			                  Math.max(3, ad.scale * ship.size), Math.max(3, ad.scale * ship.size));
 		}
 
@@ -460,13 +489,44 @@ window.addEventListener('load', function() {
 			    displaySize = Math.max(2, ad.scale * projectile.size);
 
 			if (projectile.owner == ad.shipId) {
+				ad.space.fillStyle = "#080";
+				ad.space.strokeStyle = "#080";
+			} else {
+				ad.space.fillStyle = "#800";
+				ad.space.strokeStyle = "#800";
+			}
+			
+			var now_position = [];
+			now_position[0] = projectile.position.x - ad.center[0];
+			now_position[1] = projectile.position.y - ad.center[1];
+			
+			var future_position = [];
+			future_position[0] = projectile.position.x + projectile.velocity.dx * ad.timeScale - ad.center[0];
+			future_position[1] = projectile.position.y + projectile.velocity.dy * ad.timeScale - ad.center[1];
+			
+			ad.space.beginPath();
+			ad.space.moveTo(
+				ad.scale * (future_position[0]) + ad.space.canvas.width / 2,
+				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
+			ad.space.lineTo(
+				ad.scale * (now_position[0]) + ad.space.canvas.width / 2,
+				ad.scale * (now_position[1]) + ad.space.canvas.height / 2
+			);
+			ad.space.stroke();
+		
+			ad.space.fillRect(ad.scale * (future_position[0] - projectile.size / 2) + ad.space.canvas.width / 2,
+			                  ad.scale * (future_position[1] - projectile.size / 2) + ad.space.canvas.height / 2,
+			                  displaySize, displaySize);
+			                  
+			if (projectile.owner == ad.shipId) {
 				ad.space.fillStyle = "#0f0";
 			} else {
 				ad.space.fillStyle = "#f00";
 			}
-			ad.space.fillRect(ad.scale * (projectile.position.x - ad.center[0] - projectile.size / 2) + ad.space.canvas.width / 2,
-			                  ad.scale * (projectile.position.y - ad.center[1] - projectile.size / 2) + ad.space.canvas.height / 2,
-			                  displaySize, displaySize);
+			      
+			ad.space.fillRect(ad.scale * (now_position[0] - projectile.size / 2) + ad.space.canvas.width / 2,
+			                  ad.scale * (now_position[1] - projectile.size / 2) + ad.space.canvas.height / 2,
+			                  displaySize, displaySize);            
 		}
 
 		ad.space.fillStyle = "#aaa";
