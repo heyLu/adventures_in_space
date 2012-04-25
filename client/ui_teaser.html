@@ -480,7 +480,10 @@ window.addEventListener('load', function() {
 				 vx = ship.velocity.dx, vy = ship.velocity.dy,
 				 nv = Math.sqrt(vx * vx + vy * vy),
 				 nx = vx / nv, ny = vy / nv,
-				 angle = -Math.acos(nx * 0 + ny * -1);
+				 angle = Math.acos(nx * 0 + ny * -1);
+				 if (nx < 0) {
+				 	angle = -1*angle;
+				 }
 
 			var now_position = [];
 			now_position[0] = ship.position.x - ad.center[0];
