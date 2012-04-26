@@ -186,7 +186,7 @@ public class Ship extends GameObject {
         
         /* Add damage/points to players */
     	this.damage(impact_energy);
-    	projectile.owner().points(impact_energy);
+    	projectile.owner().points(impact_energy*projectile.mass()/100);
     	
     	/* Add removable mass to hit player (reuse of projectile mass) */
         this.add_removable_mass(projectile.mass());
