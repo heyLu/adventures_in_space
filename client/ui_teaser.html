@@ -276,7 +276,7 @@ window.addEventListener('load', function() {
 	blink3.draw();
 
 	var ad = window.adventures = {
-		server: "http://localhost:8081/",
+		server: window.location.protocol == "http:" ?  window.location.origin + "/" : "http://localhost:8081/",
 		friendlyShip: document.getElementById("friendlyShip"),
 		evilShip: document.getElementById("evilShip"),
 		world: null,
