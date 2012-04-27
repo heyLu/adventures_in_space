@@ -335,13 +335,16 @@ window.addEventListener('load', function() {
 		req.send();
 	}
 	
-	space.onmousewheel = function(ev) {
-		if (ev.wheelDelta > 0) {
+	function onMouseWheel(ev) {
+		if (('wheelDelta' in ev ? ev.wheelDelta : -40 * ev.detail) > 0) {
 			ad.timeScale += (ev.shiftKey ? 10 : 1);
 		} else {
 			ad.timeScale = Math.max(0, ad.timeScale - (ev.shiftKey ? 10 : 1));
 		}
+		ev.preventDefault();
 	}
+	space.addEventListener("mousewheel", onMouseWheel, false);
+	space.addEventListener("DOMMouseScroll", onMouseWheel, false); // Firefox
 
 	var loginRequest = new XMLHttpRequest();
 	loginRequest.open('GET', ad.server + "login");
