@@ -14,7 +14,20 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author maweki
  */
 public class GameWorld {
+	/**
+	 * World Lock
+	 */
 	public Lock WorldLock;
+	
+	/**
+	 * Maximum number of players in the game
+	 */
+	public static final int Max_Players = 15;
+	
+	/**
+	 * Restarts the game if max_players is reached and a new ship is to be created
+	 */
+	public static final boolean Restart_On_Max_Players = true;
 	
 	
 	/**
@@ -356,6 +369,14 @@ public class GameWorld {
 	 * @return the new ship
 	 */
 	public Ship new_ship() {
+		if (this.number_of_ships() >= GameWorld.Max_Players) {
+			if (GameWorld.Restart_On_Max_Players) {
+				World.reset();
+			}
+			return null;
+		}
+		
+		
 		/* Create the ship with default characteristics */
 		Ship s = new Ship(GameWorld.starting_mass, GameWorld.ship_size, GameWorld.starting_removable_mass);
 		if (this.number_of_ships == 0) {
