@@ -482,46 +482,35 @@ window.addEventListener('load', function() {
 		for(var i = 0; i < ad.world.ships.length; i++) {
 			var ship = ad.world.ships[i],
 			    shipImg = ship.id == ad.shipId ? ad.friendlyShip : ad.evilShip,
-				 vx = ship.velocity.dx, vy = ship.velocity.dy,
-				 nv = Math.sqrt(vx * vx + vy * vy),
-				 nx = vx / nv, ny = vy / nv,
-				 angle = Math.acos(nx * 0 + ny * -1);
-				 if (nx < 0) {
-				 	angle = -1*angle;
-				 }
-
-			var now_position = [];
-			now_position[0] = ship.position.x - ad.center[0];
-			now_position[1] = ship.position.y - ad.center[1];
-			
-			var future_position = [];
-			future_position[0] = ship.position.x + ship.velocity.dx * ad.timeScale - ad.center[0];
-			future_position[1] = ship.position.y + ship.velocity.dy * ad.timeScale - ad.center[1];
-			
-			ad.space.beginPath();
-			ad.space.moveTo(
-				ad.scale * (future_position[0]) + ad.space.canvas.width / 2,
-				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
-			ad.space.lineTo(
-				ad.scale * (now_position[0]) + ad.space.canvas.width / 2,
-				ad.scale * (now_position[1]) + ad.space.canvas.height / 2
-			);
-			ad.space.stroke();
+			    vx = ship.velocity.dx, vy = ship.velocity.dy,
+			    nv = Math.sqrt(vx * vx + vy * vy),
+			    nx = vx / nv, ny = vy / nv,
+			    angle = (nx < 0 ? -1 : 1) * Math.acos(nx * 0 + ny * -1);
+			    futurePosition = [ship.velocity.dx * ad.timeScale,
+			                      ship.velocity.dy * ad.timeScale];
+			    shipSize = Math.max(3, ad.scale * ship.size);
 
 			ad.space.save();
-			ad.space.translate(ad.scale * now_position[0] + ad.space.canvas.width / 2,
-			                   ad.scale * now_position[1] + ad.space.canvas.height / 2);
+			ad.space.translate(ad.scale * (ship.position.x - ad.center[0]) + ad.space.canvas.width / 2,
+			                   ad.scale * (ship.position.y - ad.center[1]) + ad.space.canvas.height / 2);
+			ad.space.scale(ad.scale, ad.scale);
+			
+			ad.space.beginPath();
+			ad.space.moveTo(0, 0);
+			ad.space.lineTo(futurePosition[0], futurePosition[1]);
+			ad.space.stroke();
+
 			ad.space.rotate(angle);
-			ad.space.drawImage(shipImg,
-			                  ad.scale * (-ship.size / 2),
-			                  ad.scale * (-ship.size / 2),
-			                  Math.max(3, ad.scale * ship.size), Math.max(3, ad.scale * ship.size));
+			ad.space.drawImage(shipImg, -shipSize / 2, -shipSize / 2, shipSize, shipSize);
+
 			ad.space.restore();
 		}
 
 		for(var i = 0; i < ad.world.projectiles.length; i++) {
-			var projectile  = ad.world.projectiles[i],
-			    displaySize = Math.max(2, ad.scale * projectile.size);
+			var projectile     = ad.world.projectiles[i],
+			    displaySize    = Math.max(2, ad.scale * projectile.size);
+			    futurePosition = [projectile.velocity.dx * ad.timeScale,
+			                      projectile.velocity.dy * ad.timeScale];
 
 			if (projectile.owner == ad.shipId) {
 				ad.space.fillStyle = "#080";
@@ -530,38 +519,31 @@ window.addEventListener('load', function() {
 				ad.space.fillStyle = "#800";
 				ad.space.strokeStyle = "#800";
 			}
-			
-			var now_position = [];
-			now_position[0] = projectile.position.x - ad.center[0];
-			now_position[1] = projectile.position.y - ad.center[1];
-			
-			var future_position = [];
-			future_position[0] = projectile.position.x + projectile.velocity.dx * ad.timeScale - ad.center[0];
-			future_position[1] = projectile.position.y + projectile.velocity.dy * ad.timeScale - ad.center[1];
-			
+
+			ad.space.save();
+			ad.space.translate(ad.scale * (projectile.position.x - ad.center[0]) + ad.space.canvas.width / 2,
+			                   ad.scale * (projectile.position.y - ad.center[1]) + ad.space.canvas.height / 2);
+			ad.space.scale(ad.scale, ad.scale);
+
 			ad.space.beginPath();
-			ad.space.moveTo(
-				ad.scale * (future_position[0]) + ad.space.canvas.width / 2,
-				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
-			ad.space.lineTo(
-				ad.scale * (now_position[0]) + ad.space.canvas.width / 2,
-				ad.scale * (now_position[1]) + ad.space.canvas.height / 2
-			);
+			ad.space.moveTo(0, 0);
+			ad.space.lineTo(futurePosition[0], futurePosition[1]);
 			ad.space.stroke();
-		
-			ad.space.fillRect(ad.scale * (future_position[0] - projectile.size / 2) + ad.space.canvas.width / 2,
-			                  ad.scale * (future_position[1] - projectile.size / 2) + ad.space.canvas.height / 2,
+
+			ad.space.fillRect(futurePosition[0] - projectile.size / 2,
+			                  futurePosition[1] - projectile.size / 2,
 			                  displaySize, displaySize);
-			                  
+
 			if (projectile.owner == ad.shipId) {
 				ad.space.fillStyle = "#0f0";
 			} else {
 				ad.space.fillStyle = "#f00";
 			}
-			      
-			ad.space.fillRect(ad.scale * (now_position[0] - projectile.size / 2) + ad.space.canvas.width / 2,
-			                  ad.scale * (now_position[1] - projectile.size / 2) + ad.space.canvas.height / 2,
-			                  displaySize, displaySize);            
+
+			ad.space.fillRect(-projectile.size / 2, -projectile.size / 2,
+			                  displaySize, displaySize);
+
+			ad.space.restore();
 		}
 
 		ad.space.fillStyle = "#aaa";
