@@ -6,8 +6,9 @@ We're not so adventurous right now, sorry. More to come soonish.
 
 This is a student project by two students of the [HTWK Leipzig][] for a
 *Multimedia Web-Applications* course. It will be implemented using
-[OpenLaszlo][] on the clients (hopefully, there will be a HTML5 backend,
-too - edit: actually, we did the HTML interface first) and a Java server for all calculations and bookkeeping.
+[OpenLaszlo][] on the clients (<del>hopefully, there will be a HTML5 backend,
+too</del> actually, we did the HTML interface first) and a Java server
+for all calculations and bookkeeping.
 
 ## Resources
 
