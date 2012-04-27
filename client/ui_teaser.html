@@ -327,7 +327,6 @@ window.addEventListener('load', function() {
 		console.log(url);
 
 		req.open('GET', url);
-		req.onreadystatechange = function(ev) { console.log(ev); };
 		req.send();
 	}
 	
@@ -359,7 +358,7 @@ window.addEventListener('load', function() {
 		var req = new XMLHttpRequest();
 		req.open('GET', ad.server + "world");
 		req.onreadystatechange = function(ev) {
-			if (ev.target.readyState != 4) {
+			if (ev.target.readyState != 4 || ev.target.status != 200) {
 				return;
 			}
 
@@ -430,9 +429,15 @@ window.addEventListener('load', function() {
 			return interpolatedAry;
 		}
 
+		console.log(new Date().getTime() - ad.lastFrame);
+
 		if (ad.lastFrameWasReal) {
 			draw();
 			ad.lastFrameWasReal = false;
+			return;
+		}
+
+		if (ad.world == null) {
 			return;
 		}
 
