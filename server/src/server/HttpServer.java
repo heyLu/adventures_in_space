@@ -29,12 +29,14 @@ public class HttpServer extends NanoHTTPD {
 				int shipid = Integer.parseInt(parms.getProperty("id"));
 				World.w.WorldLock.lock();
 				game.World.w.accelerate_ship(new Point2D.Double(dx, dy), energy, shipid);
-				World.w.WorldLock.unlock();
 				msg = "{\"id\" : " + shipid + " }";
 			}
 			catch (Exception e) {
 				// send error on out of energy exception
 				msg = "";
+			}
+			finally {
+				World.w.WorldLock.unlock();
 			}
 		}
 		else if (uri.equalsIgnoreCase("/shoot")) {
@@ -46,12 +48,14 @@ public class HttpServer extends NanoHTTPD {
 				int shipid = Integer.parseInt(parms.getProperty("id"));
 				World.w.WorldLock.lock();
 				int p = game.World.w.shoot(new Point2D.Double(dx, dy), energy, mass, shipid);
-				World.w.WorldLock.unlock();
 				msg = "{\"id\" : " + p + " }";
 			}
 			catch (Exception e) {
 				// send error on out of energy exception
 				msg = "";
+			}
+			finally {
+				World.w.WorldLock.unlock();
 			}
 		}
 		else if (uri.equalsIgnoreCase("/login")) {
