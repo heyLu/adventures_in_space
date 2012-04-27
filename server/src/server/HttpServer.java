@@ -91,6 +91,37 @@ public class HttpServer extends NanoHTTPD {
 				e.printStackTrace();
 			}
 		}
+		else if (uri.equalsIgnoreCase("/client")) {
+			mimeType = "text/html";
+			try {
+				msg = HttpServer.readFileAsString("../client/ui_teaser.html");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (uri.equalsIgnoreCase("/assets/ship_f.svg")) {
+			mimeType = "image/svg+xml";
+			try {
+				msg = HttpServer.readFileAsString("../client/assets/ship_f.svg");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (uri.equalsIgnoreCase("/assets/ship_e.svg")) {
+			mimeType = "image/svg+xml";
+			try {
+				msg = HttpServer.readFileAsString("../client/assets/ship_e.svg");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (uri.equalsIgnoreCase("/prefixfree.min.js")) {
+			mimeType = "text/javascript";
+			try {
+				msg = HttpServer.readFileAsString("../client/prefixfree.min.js");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		else {
 			World.w.WorldLock.lock();
 			msg = game.World.w.json().WorldState();
