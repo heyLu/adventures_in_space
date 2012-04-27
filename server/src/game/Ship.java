@@ -239,14 +239,14 @@ public class Ship extends GameObject {
         projectile.change_velocity(this.velocity());
         projectile.set_position(this.position());
         
+        /* Accelerate projectile and remove mass/energy from ship's reservoir */
+        projectile.accelerate_object(direction, energy/2, 1.0);
+        this.remove_removable_mass(mass);
+        this.remove_energy(energy/2); // the other half is removed by accelerate_ship()
+        
         /* Calculate negative vector (opposite direction) and accelerate the ship in that direction */
         Point2D.Double negative_vector = new Point2D.Double(-direction.x,-direction.y);
         this.accelerate_ship(negative_vector, energy/2, 1.0);
-        
-        /* Accelerate projectile and remove mass/energy from ship's reservoir */
-        projectile.accelerate_object(direction, energy/2, 1.0);
-        this.remove_energy(energy/2); // the other half was removed by accelerate_ship()
-        this.remove_removable_mass(mass);
         
         World.w.add_object(projectile);
         
