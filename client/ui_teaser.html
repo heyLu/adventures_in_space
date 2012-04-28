@@ -437,7 +437,7 @@ window.addEventListener('load', function() {
 			return interpolatedAry;
 		}
 
-		console.log(new Date().getTime() - ad.lastFrame);
+		document.title = "Adventures in Space (" + Math.round(1/((new Date().getTime() - ad.lastFrame)/1000)) + "FPS)";
 
 		if (ad.lastFrameWasReal) {
 			draw();
@@ -482,6 +482,8 @@ window.addEventListener('load', function() {
 		if (ad.world == null) {
 			return;
 		}
+		
+		var hovered_ship = 0;
 
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
 		ad.space.fillStyle = "#fff";
@@ -524,6 +526,13 @@ window.addEventListener('load', function() {
 			                  ad.scale * (-ship.size / 2),
 			                  ad.scale * (-ship.size / 2),
 			                  Math.max(3, ad.scale * ship.size), Math.max(3, ad.scale * ship.size));
+			
+			if ((ad.lastEv.clientX >= ad.scale * (now_position[0] - (ship.size / 2)) + ad.space.canvas.width / 2) && 
+				(ad.lastEv.clientX <= ad.scale * (now_position[0] + (ship.size / 2)) + ad.space.canvas.width / 2) &&
+				(ad.lastEv.clientY >= ad.scale * (now_position[1] - (ship.size / 2)) + ad.space.canvas.height / 2) &&
+				(ad.lastEv.clientY <= ad.scale * (now_position[1] + (ship.size / 2)) + ad.space.canvas.height / 2)) {
+				hovered_ship = ship.id;
+			}
 			ad.space.restore();
 		}
 
@@ -566,10 +575,17 @@ window.addEventListener('load', function() {
 			} else {
 				ad.space.fillStyle = "#f00";
 			}
+			
+			if (projectile.owner == hovered_ship) {
+				ad.space.fillText(Math.round(projectile.emptymass)+"kg",
+					ad.scale * (now_position[0]) + ad.space.canvas.width / 2 -2,
+					ad.scale * (now_position[1]) + ad.space.canvas.height / 2 -2);
+			}
 			      
 			ad.space.fillRect(ad.scale * (now_position[0] - projectile.size / 2) + ad.space.canvas.width / 2,
 			                  ad.scale * (now_position[1] - projectile.size / 2) + ad.space.canvas.height / 2,
-			                  displaySize, displaySize);            
+			                  displaySize, displaySize); 
+			         
 		}
 
 		ad.space.fillStyle = "#aaa";
