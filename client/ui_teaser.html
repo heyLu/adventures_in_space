@@ -484,6 +484,7 @@ window.addEventListener('load', function() {
 		}
 		
 		var hovered_ship = 0;
+		var min_ship_size = 10;
 
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
 		ad.space.fillStyle = "#fff";
@@ -522,10 +523,11 @@ window.addEventListener('load', function() {
 			ad.space.translate(ad.scale * now_position[0] + ad.space.canvas.width / 2,
 			                   ad.scale * now_position[1] + ad.space.canvas.height / 2);
 			ad.space.rotate(angle);
+			var scaled_shipsize = Math.max(min_ship_size, ad.scale * ship.size);
 			ad.space.drawImage(shipImg,
-			                  ad.scale * (-ship.size / 2),
-			                  ad.scale * (-ship.size / 2),
-			                  Math.max(3, ad.scale * ship.size), Math.max(3, ad.scale * ship.size));
+			                  scaled_shipsize / -2,
+			                  scaled_shipsize / -2,
+			                  scaled_shipsize , scaled_shipsize);
 			
 			if ((ad.lastEv.clientX >= ad.scale * (now_position[0] - (ship.size / 2)) + ad.space.canvas.width / 2) && 
 				(ad.lastEv.clientX <= ad.scale * (now_position[0] + (ship.size / 2)) + ad.space.canvas.width / 2) &&
@@ -589,9 +591,13 @@ window.addEventListener('load', function() {
 		}
 
 		ad.space.fillStyle = "#aaa";
-		ad.space.fillRect(10, 10, 100 * ad.scale, 2);
-		ad.space.fillRect(10, 10, 2, 100 * ad.scale);
+		ad.space.fillRect(11, 11, 100 * ad.scale, 2);
+		ad.space.fillRect(11, 11, 2, 100 * ad.scale);
 		ad.space.fillText("100m", 10, 10);
+		
+		if (ad.scale < min_ship_size / 25) {
+			ad.space.fillText("Max zoom reached. Ship sizes no longer proportional.", 50, 10);
+		}
 
 		ad.ui.update();
 	}
