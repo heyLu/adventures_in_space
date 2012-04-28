@@ -1,6 +1,16 @@
 # Adventures in space
 
-We're not so adventurous right now, sorry. More to come soonish.
+It's the year 2626. After the robot uprising of 2090 and humanities
+inevitable defeat, a few human survivors fled to the stars. Even
+though their ingenuity saved their lives they could not change the
+laws of physics. Now, 500 years later, still on their way to Proxima Centauri
+and its neighboring stars, the fugitives fight with their last remaining
+resources against each other for an unlikely future. A fight in which,
+to prevent history repeating itself, no computer understanding higher
+math could have any part in.
+
+Now it is your turn to defend your ship and to ensure the survival
+of your clan, fighting against those who you once called friends.
 
 ## A little bit of context
 
