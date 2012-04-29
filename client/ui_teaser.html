@@ -227,7 +227,7 @@ window.addEventListener('load', function() {
 		/* Create a new StarField. Give it at least a canvas and
 		   optionally the number of stars to create, canvas width and
 		   canvas height. */
-		function StarField(canvas, n, width, height)  {
+		function StarField(canvas, n, speed, width, height)  {
 			var width  = width  || window.innerWidth,
 			    height = height || window.innerHeight;
 
@@ -238,6 +238,8 @@ window.addEventListener('load', function() {
 			this.ctx   = canvas.getContext('2d');
 			this.n     = n || width * height * 0.001;
 			this.stars = [];
+			this.stars_calced = false;
+			this.speed = speed;
 
 			return this;
 		}
@@ -246,13 +248,25 @@ window.addEventListener('load', function() {
 		StarField.prototype.draw = function() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-			for(var i = 0; i < this.n; i++) {
-					this.stars[i] = [Math.random() * this.canvas.width,  // x
-					                 Math.random() * this.canvas.height, // y
-					                 starColor(i, this.n),               // colour
-					                 Math.floor(Math.random() * 2) + 1]; // size
-					this.ctx.fillStyle = this.stars[i][2];
-					this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3]);
+			if (this.stars_calced) {
+				for(var i = 0; i < this.n; i++) {
+						this.ctx.fillStyle = this.stars[i][2];
+						this.ctx.fillRect(
+							(((this.stars[i][0] - ad.center[0]*this.speed*ad.scale) % this.canvas.width)+this.canvas.width)%this.canvas.width,
+							(((this.stars[i][1] - ad.center[1]*this.speed*ad.scale) % this.canvas.height)+this.canvas.height)%this.canvas.height,
+							this.stars[i][3], this.stars[i][3]);
+				}
+			}
+			else {
+				this.stars_calced = true;
+				for(var i = 0; i < this.n; i++) {
+						this.stars[i] = [Math.random() * this.canvas.width,  // x
+							         Math.random() * this.canvas.height, // y
+							         starColor(i, this.n),               // colour
+							         Math.floor(Math.random() * 2) + 1]; // size
+						this.ctx.fillStyle = this.stars[i][2];
+						this.ctx.fillRect(this.stars[i][0], this.stars[i][1], this.stars[i][3], this.stars[i][3]);
+				}
 			}
 		}
 
@@ -262,10 +276,10 @@ window.addEventListener('load', function() {
 	var space = document.getElementById('space'),
 	    ctx   = space.getContext('2d'),
 	    sternleinStehen = window.innerWidth * window.innerHeight * 0.001,
-	    starField = new StarField(document.getElementById('stars'), sternleinStehen * 0.4),
-	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.1),
-	    blink2 = new StarField(document.getElementById('stars_blink2'), sternleinStehen * 0.1),
-	    blink3 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1),
+	    starField = new StarField(document.getElementById('stars'), sternleinStehen * 0.4, 1),
+	    blink1 = new StarField(document.getElementById('stars_blink1'), sternleinStehen * 0.1, 0.7),
+	    blink2 = new StarField(document.getElementById('stars_blink2'), sternleinStehen * 0.1, 0.4),
+	    blink3 = new StarField(document.getElementById('stars_blink3'), sternleinStehen * 0.1, 0.1),
 	    controlbar = document.getElementById('controlbar');
 
 	space.width  = window.innerWidth;
@@ -483,6 +497,11 @@ window.addEventListener('load', function() {
 			return;
 		}
 		
+		starField.draw();
+		blink1.draw();
+		blink2.draw();
+		blink3.draw();
+		
 		var hovered_ship = 0;
 		var min_ship_size = 10;
 
@@ -605,3 +624,4 @@ window.addEventListener('load', function() {
 </script>
 <script language="javascript" src="prefixfree.min.js"></script>
 </html>
+
