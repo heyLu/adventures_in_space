@@ -314,9 +314,9 @@ window.addEventListener('load', function() {
 	ad.ui.pmass.oninput  = calc_projectile_velocity;
 	ad.ui.energy.oninput = calc_projectile_velocity;
 
-	ad.evilShip.setAttribute("style", "visibility: hidden;");
-	ad.friendlyShip.setAttribute("style", "visibility: hidden;");
-	ad.ghostShip.setAttribute("style", "visibility: hidden;");
+	ad.evilShip.setAttribute("style", "display: none;");
+	ad.friendlyShip.setAttribute("style", "display: none;");
+	ad.ghostShip.setAttribute("style", "display: none;");
 
 	space.onmousemove = function(ev) {
 		ad.lastEv = ev;
