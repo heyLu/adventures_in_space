@@ -33,7 +33,7 @@
 	#stars_blink2 { animation: fade 5s infinite }
 	#stars_blink3 { animation: fade 7s infinite }
 
-	#friendlyShip, #evilShip {
+	#friendlyShip, #evilShip, #ghostShip {
 		width: 100px;
 		height: 100px;
 	}
@@ -101,6 +101,7 @@ Sorry, but we really need the canvas.
 
 <img id="friendlyShip" type="image/svg+xml" src="./assets/ship_f.svg" />
 <img id="evilShip" type="image/svg+xml" src="./assets/ship_e.svg" />
+<img id="ghostShip" type="image/svg+xml" src="./assets/ship_g.svg" />
 
 <section id="overlay">
 	<p id="name">space cadet</p>
@@ -293,6 +294,7 @@ window.addEventListener('load', function() {
 		server: "http://localhost:8081/",
 		friendlyShip: document.getElementById("friendlyShip"),
 		evilShip: document.getElementById("evilShip"),
+		ghostShip: document.getElementById("ghostShip"),
 		world: null,
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
@@ -314,6 +316,7 @@ window.addEventListener('load', function() {
 
 	ad.evilShip.setAttribute("style", "visibility: hidden;");
 	ad.friendlyShip.setAttribute("style", "visibility: hidden;");
+	ad.ghostShip.setAttribute("style", "visibility: hidden;");
 
 	space.onmousemove = function(ev) {
 		ad.lastEv = ev;
@@ -506,8 +509,8 @@ window.addEventListener('load', function() {
 		var min_ship_size = 10;
 
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
-		ad.space.fillStyle = "#fff";
-		ad.space.strokeStyle = "#fff";
+		ad.space.fillStyle = "#444";
+		ad.space.strokeStyle = "#444";
 
 		for(var i = 0; i < ad.world.ships.length; i++) {
 			var ship = ad.world.ships[i],
@@ -519,6 +522,8 @@ window.addEventListener('load', function() {
 				 if (nx < 0) {
 				 	angle = -1*angle;
 				 }
+				 
+			var scaled_shipsize = Math.max(min_ship_size, ad.scale * ship.size);
 
 			var now_position = [];
 			now_position[0] = ship.position.x - ad.center[0];
@@ -530,19 +535,29 @@ window.addEventListener('load', function() {
 			
 			ad.space.beginPath();
 			ad.space.moveTo(
-				ad.scale * (future_position[0]) + ad.space.canvas.width / 2,
-				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
-			ad.space.lineTo(
 				ad.scale * (now_position[0]) + ad.space.canvas.width / 2,
 				ad.scale * (now_position[1]) + ad.space.canvas.height / 2
 			);
+			ad.space.lineTo(
+				ad.scale * (future_position[0]) + ad.space.canvas.width / 2,
+				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
 			ad.space.stroke();
-
+			
 			ad.space.save();
+			
+			ad.space.translate(ad.scale * future_position[0] + ad.space.canvas.width / 2,
+			                   ad.scale * future_position[1] + ad.space.canvas.height / 2);
+			ad.space.rotate(angle);
+			ad.space.drawImage(ad.ghostShip,
+			                  scaled_shipsize / -2,
+			                  scaled_shipsize / -2,
+			                  scaled_shipsize , scaled_shipsize);
+			ad.space.restore();
+			ad.space.save();
+			
 			ad.space.translate(ad.scale * now_position[0] + ad.space.canvas.width / 2,
 			                   ad.scale * now_position[1] + ad.space.canvas.height / 2);
 			ad.space.rotate(angle);
-			var scaled_shipsize = Math.max(min_ship_size, ad.scale * ship.size);
 			ad.space.drawImage(shipImg,
 			                  scaled_shipsize / -2,
 			                  scaled_shipsize / -2,
