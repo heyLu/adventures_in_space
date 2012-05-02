@@ -52,7 +52,17 @@
 	}
 
 	#points { font-size: larger }
-	#velocity_raw, #rmass { font-size: smaller }
+	#velocity_raw, #rmass, #hover_rmass { font-size: smaller }
+
+	#hover_info {
+		position: fixed;
+		top: 70%;
+		right: 1em;
+
+		text-align: right;
+		color: white;
+		font-size: smaller;
+	}
 
 	#time_scale {
 		position: absolute;
@@ -116,6 +126,17 @@ Sorry, but we really need the canvas.
 	</p>
 	<p id="relative_mouse_coords">0,0</p>
 	<p id="time_left">∞</p>
+</section>
+
+<section id="hover_info">
+	<p id="hover_name">THE ENEMY</p>
+	<p>
+		<span id="hover_mass">0kg</span><br />
+		<span id="hover_rmass">0kg</span>
+	</p>
+	<p>
+		<span id="hover_vel">0m/s</span><br />
+	</p>
 </section>
 
 <p id="time_scale">Δt+0s</p>
@@ -219,6 +240,22 @@ window.addEventListener('load', function() {
 			ad.ui.relative_mouse_coords.innerHTML = "Δm" + Math.round(dx) + "," + Math.round(dy);
 		}
 
+		ShipUI.prototype.updateHover = function(ship) {
+			if (ship == null) { // No Ship hovered
+				this.hover_info.setAttribute("style", "display: none;");
+			} else {
+				var dx = ship.velocity.dx,
+				    dy = ship.velocity.dy;
+
+				this.hover_info.setAttribute("style", "display: inherit;");
+
+				this.hover_mass.innerHTML  = ship.mass + "kg";
+				this.hover_rmass.innerHTML = ship.rem_mass + "kg";
+
+				this.hover_vel.innerHTML = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
+			}
+		}
+
 		return ShipUI;
 	}();
 
@@ -298,7 +335,8 @@ window.addEventListener('load', function() {
 		world: null,
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
-		                   "time_left", "name", "time_scale"]),
+		                   "time_left", "name", "time_scale", "hover_info", "hover_mass",
+		                   "hover_rmass", "hover_vel"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false,
@@ -505,7 +543,7 @@ window.addEventListener('load', function() {
 		blink2.draw();
 		blink3.draw();
 		
-		var hovered_ship = 0;
+		var hovered_ship = null;
 		var min_ship_size = 10;
 
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
@@ -567,8 +605,10 @@ window.addEventListener('load', function() {
 				(ad.lastEv.clientX <= ad.scale * (now_position[0] + (ship.size / 2)) + ad.space.canvas.width / 2) &&
 				(ad.lastEv.clientY >= ad.scale * (now_position[1] - (ship.size / 2)) + ad.space.canvas.height / 2) &&
 				(ad.lastEv.clientY <= ad.scale * (now_position[1] + (ship.size / 2)) + ad.space.canvas.height / 2)) {
-				hovered_ship = ship.id;
+				hovered_ship = ship;
 			}
+			ad.ui.updateHover(hovered_ship);
+
 			ad.space.restore();
 		}
 
@@ -612,7 +652,7 @@ window.addEventListener('load', function() {
 				ad.space.fillStyle = "#f00";
 			}
 			
-			if (projectile.owner == hovered_ship) {
+			if (hovered_ship != null && projectile.owner == hovered_ship.id) {
 				ad.space.fillText(Math.round(projectile.emptymass)+"kg",
 					ad.scale * (now_position[0]) + ad.space.canvas.width / 2 -2,
 					ad.scale * (now_position[1]) + ad.space.canvas.height / 2 -2);
