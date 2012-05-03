@@ -162,9 +162,31 @@ Sorry, but we really need the canvas.
 window.addEventListener('load', function() {
 	window.MAX_SCALE = 2.0;
 
+	function check_bounds(el) {
+		var min = el.getAttribute("min"),
+		    max = el.getAttribute("max"),
+		    val = parseInt(el.value);
+
+		if (el.value == "") {
+			return min;
+		}
+
+		if (val < min) {
+			el.value = min;
+			return min;
+		} else if (val > max) {
+			el.value = max;
+			return max;
+		} else {
+			el.value = val;
+			return val;
+		}
+
+	}
+
 	function calc_projectile_velocity() {
-		var m = ad.ui.pmass.value,
-		    e = ad.ui.energy.value,
+		var m = check_bounds(ad.ui.pmass),
+		    e = check_bounds(ad.ui.energy),
 		    v = ad.ui.pvel;
 
 		v.value = Math.sqrt(e / m);
