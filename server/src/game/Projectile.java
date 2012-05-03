@@ -36,7 +36,7 @@ public class Projectile extends GameObject {
     * @param owner Projectile owner
     */
    public Projectile(double mass, Ship owner) {
-       super(mass,Math.sqrt(mass)/10);
+       super(Math.abs(mass),Math.sqrt(Math.abs(mass))/10);
        this.owner = owner;
    }
    

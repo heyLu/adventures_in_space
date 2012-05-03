@@ -91,6 +91,15 @@ public class GameWorld {
     private static final double starting_removable_mass = 20000.0;
     
     /**
+     * Maximum and minimum playable amounts
+     */
+    private static final double min_projectile_mass = 1.0,
+    		max_projectile_mass = 500.0,
+    		min_energy_amount = 1.0,
+    		max_energy_amount = 5000.0;
+    		
+    
+    /**
      * Constructor
      */
     public GameWorld() {
@@ -327,6 +336,9 @@ public class GameWorld {
 	 * @throws OutOfEnergyException Is thrown when available mass/energy was insufficient
 	 */
 	public int shoot(Point2D.Double direction, double energy, double mass, int id) throws OutOfEnergyException {
+		mass = Math.min(Math.max(GameWorld.min_projectile_mass, mass), GameWorld.max_projectile_mass);
+		energy = Math.min(Math.max(GameWorld.min_energy_amount, energy), GameWorld.max_energy_amount);
+		
 		Iterator<GameObject> iter = this.ObjectsIter();
 		while (iter.hasNext()) {
 			GameObject o = iter.next();
@@ -351,6 +363,8 @@ public class GameWorld {
 	 * @throws OutOfEnergyException Is thrown when available mass/energy was insufficient
 	 */
 	public void accelerate_ship(Point2D.Double direction, double energy, int id) throws OutOfEnergyException {
+		energy = Math.min(Math.max(GameWorld.min_energy_amount, energy), GameWorld.max_energy_amount);
+		
 		Iterator<GameObject> iter = this.ObjectsIter();
 		while (iter.hasNext()) {
 			GameObject o = iter.next();
