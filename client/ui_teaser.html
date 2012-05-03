@@ -470,11 +470,12 @@ window.addEventListener('load', function() {
 			var dx = max_x - min_x,
 			    dy = max_y - min_y;
 
-			ad.center = [min_x + dx / 2, min_y + dy / 2];
 			if (ad.world.ships.length <= 1) {
-				ad.scale = MAX_SCALE;
+				ad.scale  = MAX_SCALE;
+				ad.center = [ad.space.canvas.width / 2, ad.space.canvas.height / 2];
 			} else {
-				ad.scale = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
+				ad.scale  = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
+				ad.center = [min_x + dx / 2, min_y + dy / 2];
 			}
 
 			ad.lastFrameWasReal = true;
@@ -542,11 +543,12 @@ window.addEventListener('load', function() {
 			var dx = max_x - min_x,
 			    dy = max_y - min_y;
 
-			ad.center = [min_x + dx / 2, min_y + dy / 2];
 			if (ad.world.ships.length <= 1) {
-				ad.scale = MAX_SCALE;
+				ad.scale  = MAX_SCALE;
+				ad.center = [ad.space.canvas.width / 2, ad.space.canvas.height / 2];
 			} else {
-				ad.scale = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
+				ad.scale  = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
+				ad.center = [min_x + dx / 2, min_y + dy / 2];
 			}
 		}
 
