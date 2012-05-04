@@ -329,6 +329,10 @@ window.addEventListener('load', function() {
 		}
 
 		ShipUI.prototype.updateMouse = function(ev) {
+			if (ad.ship == null) {
+				return;
+			}
+
 			var x  = ad.scale * (ad.ship.position.x - ad.center[0]) + ad.space.canvas.width / 2,
 			    y  = ad.scale * (ad.ship.position.y - ad.center[1]) + ad.space.canvas.height / 2,
 			    dx = ev.clientX - x,
