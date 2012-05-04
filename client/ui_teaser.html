@@ -193,6 +193,7 @@ Sorry, but we really need the canvas.
 
 <section id="hover_info">
 	<p id="hover_name">THE ENEMY</p>
+	<p id="hover_points">0</p>
 	<p>
 		<span id="hover_mass">0kg</span><br />
 		<span id="hover_rmass">0kg</span>
@@ -334,7 +335,8 @@ window.addEventListener('load', function() {
 
 				this.hover_info.setAttribute("style", "display: inherit;");
 
-				this.hover_name.innerHTML  = ship.playername || "THE ENEMY";
+				this.hover_name.innerHTML   = ship.playername || "THE ENEMY";
+				this.hover_points.innerHTML = ship.points;
 
 				this.hover_mass.innerHTML  = ship.mass + "kg";
 				this.hover_rmass.innerHTML = ship.rem_mass + "kg";
@@ -423,7 +425,7 @@ window.addEventListener('load', function() {
 		ui:    new ShipUI(["overlay", "pmass", "energy", "pvel", "points", "mass", "rmass",
 		                   "velocity_pretty", "velocity_raw", "relative_mouse_coords",
 		                   "time_left", "name", "time_scale", "hover_info", "hover_name",
-		                   "hover_mass", "hover_rmass", "hover_vel",
+		                   "hover_points", "hover_mass", "hover_rmass", "hover_vel",
 		                   "login", "playername", "start_game", "watch_game"]),
 		space: ctx,
 		starFields: [starField, blink1, blink2, blink3],
