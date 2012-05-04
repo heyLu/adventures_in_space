@@ -127,6 +127,8 @@
 		color: #aaa;
 		border-top: 1px dotted #fff;
 	}
+
+	#overlay, #hover_info, #time_scale { visibility: hidden }
 </style>
 </head>
 
@@ -319,6 +321,7 @@ window.addEventListener('load', function() {
 				this.velocity_pretty.innerHTML = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
 				this.velocity_raw.innerHTML = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
 
+				this.overlay.setAttribute("style", "visibility: visible;");
 				this.time_scale.innerHTML = "Δt+" + ad.timeScale + "s";
 
 				this.updateMouse(ad.lastEv);
@@ -338,12 +341,12 @@ window.addEventListener('load', function() {
 
 		ShipUI.prototype.updateHover = function(ship) {
 			if (ship == null) { // No Ship hovered
-				this.hover_info.setAttribute("style", "display: none;");
+				this.hover_info.setAttribute("style", "visibility: hidden;");
 			} else {
 				var dx = ship.velocity.dx,
 				    dy = ship.velocity.dy;
 
-				this.hover_info.setAttribute("style", "display: inherit;");
+				this.hover_info.setAttribute("style", "visibility: visible;");
 
 				this.hover_name.innerHTML   = ship.playername || "THE ENEMY";
 				this.hover_points.innerHTML = ship.points;
