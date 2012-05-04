@@ -25,7 +25,7 @@
 		animation: fade_out 1s 1;
 	}
 
-	#stars, #stars_blink1, #stars_blink2, #stars_blink3, #space {
+	#stars, #stars_blink1, #stars_blink2, #stars_blink3, #space, #ghosts {
 		position: fixed;
 		left: 0;
 		top: 0
@@ -144,6 +144,9 @@
 </canvas>
 
 <canvas id="stars_blink3">
+</canvas>
+
+<canvas id="ghosts">
 </canvas>
 
 <canvas id="space">
@@ -445,6 +448,7 @@ window.addEventListener('load', function() {
 		                   "hover_points", "hover_mass", "hover_rmass", "hover_vel",
 		                   "login", "playername", "start_game", "watch_game"]),
 		space: ctx,
+		ghosts: document.getElementById('ghosts').getContext('2d'),
 		starFields: [starField, blink1, blink2, blink3],
 		stop: false,
 		center: [space.width / 2, space.height / 2],
@@ -664,8 +668,9 @@ window.addEventListener('load', function() {
 		blink2.draw();
 		blink3.draw();
 		
-		var hovered_ship = null;
-		var min_ship_size = 10;
+		var hovered_ship = null,
+		    min_ship_size = 10,
+		    ghosts = [];
 
 		ad.space.clearRect(0, 0, ad.space.canvas.width, ad.space.canvas.height);
 		ad.space.fillStyle = "#444";
@@ -721,6 +726,8 @@ window.addEventListener('load', function() {
 			                  scaled_shipsize / -2,
 			                  scaled_shipsize / -2,
 			                  scaled_shipsize , scaled_shipsize);
+
+			ghosts[i] = { pos: future_position, scaledSize: scaled_shipsize, angle: angle };
 			
 			if ((ad.lastEv.clientX >= ad.scale * (now_position[0] - (ship.size / 2)) + ad.space.canvas.width / 2) && 
 				(ad.lastEv.clientX <= ad.scale * (now_position[0] + (ship.size / 2)) + ad.space.canvas.width / 2) &&
@@ -731,6 +738,21 @@ window.addEventListener('load', function() {
 			ad.ui.updateHover(hovered_ship);
 
 			ad.space.restore();
+		}
+
+		ad.ghosts.clearRect(0, 0, ad.ghosts.canvas.width, ad.ghosts.canvas.height);
+		for(var i = 0; i < ghosts.length; i++) {
+			var ghost = ghosts[i];
+
+			ad.ghosts.save();
+			ad.ghosts.translate(ad.scale * ghost.pos[0] + ad.ghosts.canvas.width / 2,
+			                    ad.scale * ghost.pos[1] + ad.ghosts.canvas.height / 2);
+			ad.ghosts.rotate(ghost.angle);
+			ad.ghosts.drawImage(ad.ghostShip,
+			                    ghost.scaledSize / -2,
+			                    ghost.scaledSize / -2,
+			                    ghost.scaledSize , ghost.scaledSize);
+			ad.ghosts.restore();
 		}
 
 		for(var i = 0; i < ad.world.projectiles.length; i++) {
