@@ -527,7 +527,7 @@ window.addEventListener('load', function() {
 
 			if (ad.world.ships.length <= 1) {
 				ad.scale  = MAX_SCALE;
-				ad.center = [ad.space.canvas.width / 2, ad.space.canvas.height / 2];
+				ad.center = [0, 0];
 			} else {
 				ad.scale  = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
 				ad.center = [min_x + dx / 2, min_y + dy / 2];
@@ -600,7 +600,7 @@ window.addEventListener('load', function() {
 
 			if (ad.world.ships.length <= 1) {
 				ad.scale  = MAX_SCALE;
-				ad.center = [ad.space.canvas.width / 2, ad.space.canvas.height / 2];
+				ad.center = [0, 0];
 			} else {
 				ad.scale  = Math.min(MAX_SCALE, Math.min(ad.space.canvas.width / dx, ad.space.canvas.height / dy) * 0.8);
 				ad.center = [min_x + dx / 2, min_y + dy / 2];
