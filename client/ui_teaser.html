@@ -15,6 +15,16 @@
 		width: 6em;
 	}
 
+	@keyframes fade_out {
+		0% { opacity: 1.0 }
+		100% { opacity: 0.0 }
+	}
+
+	.fade_out {
+		animation-fill-mode: backwards;
+		animation: fade_out 1s 1;
+	}
+
 	#stars, #stars_blink1, #stars_blink2, #stars_blink3, #space {
 		position: fixed;
 		left: 0;
@@ -490,7 +500,12 @@ window.addEventListener('load', function() {
 	function login() {
 		var onlyWatch = ad.ui.watch_game.checked;
 
-		ad.ui.login.setAttribute("style", "display: none;");
+		ad.ui.login.setAttribute("class", "fade_out");
+		function hideLogin(ev) {
+			ad.ui.login.setAttribute("style", "display: none;");
+		}
+		ad.ui.login.addEventListener("animationend", hideLogin, false);
+		ad.ui.login.addEventListener("webkitAnimationEnd", hideLogin, false);
 
 		if (onlyWatch) {
 			return;
