@@ -36,6 +36,10 @@
 	#friendlyShip, #evilShip, #ghostShip {
 		width: 100px;
 		height: 100px;
+
+		visibility: hidden;
+		z-index: 0;
+		cursor: crosshair;
 	}
 
 	#space {
@@ -417,10 +421,6 @@ window.addEventListener('load', function() {
 	calc_projectile_velocity();
 	ad.ui.pmass.oninput  = calc_projectile_velocity;
 	ad.ui.energy.oninput = calc_projectile_velocity;
-
-	ad.evilShip.setAttribute("style", "display: none;");
-	ad.friendlyShip.setAttribute("style", "display: none;");
-	ad.ghostShip.setAttribute("style", "display: none;");
 
 	space.onmousemove = function(ev) {
 		ad.lastEv = ev;
