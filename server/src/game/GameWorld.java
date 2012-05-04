@@ -22,7 +22,7 @@ public class GameWorld {
 	/**
 	 * Maximum number of players in the game
 	 */
-	public static final int Max_Players = 15;
+	public static final int Max_Players = 2;
 	
 	/**
 	 * Restarts the game if max_players is reached and a new ship is to be created
@@ -386,6 +386,7 @@ public class GameWorld {
 		if (this.number_of_ships() >= GameWorld.Max_Players) {
 			if (GameWorld.Restart_On_Max_Players) {
 				World.reset();
+				return World.w.new_ship();
 			}
 			return null;
 		}
