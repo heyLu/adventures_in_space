@@ -449,7 +449,7 @@ window.addEventListener('load', function() {
 		space: ctx,
 		ghosts: document.getElementById('ghosts').getContext('2d'),
 		starFields: [starField, blink1, blink2, blink3],
-		stop: false,
+		stop: true,
 		center: [space.width / 2, space.height / 2],
 		scale: 1,
 		timeScale: 0,
@@ -520,6 +520,8 @@ window.addEventListener('load', function() {
 		ad.ui.login.addEventListener("animationend", hideLogin, false);
 		ad.ui.login.addEventListener("webkitAnimationEnd", hideLogin, false);
 
+		ad.stop = false;
+
 		if (onlyWatch) {
 			return;
 		}
@@ -587,6 +589,10 @@ window.addEventListener('load', function() {
 	}, 500);
 
 	window.setInterval(function() {
+		if (ad.stop) {
+			return;
+		}
+
 		function clone(obj) {
 			var newObj = {};
 			newObj.__proto__ = obj;
