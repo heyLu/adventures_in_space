@@ -472,6 +472,7 @@ window.addEventListener('load', function() {
 	}
 
 	space.onmousedown = function(ev) {
+		ev.preventDefault();
 		if (ad.ship == null) {
 			return;
 		}
