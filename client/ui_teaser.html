@@ -306,6 +306,8 @@ window.addEventListener('load', function() {
 		}
 
 		ShipUI.prototype.update = function() {
+			this.time_scale.setAttribute("style", "visibility: visible;");
+			this.time_scale.innerHTML = "Δt+" + ad.timeScale + "s";
 
 			if (ad.ship == null) {
 				this.overlay.setAttribute("style", "visibility: hidden;");
@@ -323,9 +325,6 @@ window.addEventListener('load', function() {
 
 				this.velocity_pretty.innerHTML = Math.round(Math.sqrt(dx * dx + dy * dy) * 1000) / 1000 + "m/s";
 				this.velocity_raw.innerHTML = Math.round(dx * 100) / 100 + "," + Math.round(dy * 100) / 100;
-
-				this.overlay.setAttribute("style", "visibility: visible;");
-				this.time_scale.innerHTML = "Δt+" + ad.timeScale + "s";
 
 				this.updateMouse(ad.lastEv);
 			}
