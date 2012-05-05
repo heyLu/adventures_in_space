@@ -459,6 +459,9 @@ window.addEventListener('load', function() {
 		lastFrame: 100
 	}
 
+	ad.ghosts.canvas.width  = window.innerWidth;
+	ad.ghosts.canvas.height = window.innerHeight;
+
 	calc_projectile_velocity();
 	ad.ui.pmass.oninput  = calc_projectile_velocity;
 	ad.ui.energy.oninput = calc_projectile_velocity;
@@ -707,16 +710,6 @@ window.addEventListener('load', function() {
 				ad.scale * (future_position[1]) + ad.space.canvas.height / 2 );
 			ad.space.stroke();
 			
-			ad.space.save();
-			
-			ad.space.translate(ad.scale * future_position[0] + ad.space.canvas.width / 2,
-			                   ad.scale * future_position[1] + ad.space.canvas.height / 2);
-			ad.space.rotate(angle);
-			ad.space.drawImage(ad.ghostShip,
-			                  scaled_shipsize / -2,
-			                  scaled_shipsize / -2,
-			                  scaled_shipsize , scaled_shipsize);
-			ad.space.restore();
 			ad.space.save();
 			
 			ad.space.translate(ad.scale * now_position[0] + ad.space.canvas.width / 2,
